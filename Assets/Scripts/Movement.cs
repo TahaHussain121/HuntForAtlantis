@@ -49,9 +49,10 @@ public class Movement : MonoBehaviour
                 _iscrouching = false;
                 Debug.Log("up ");
                 Crouch(_iscrouching);
-
-
-
+            }
+            else if (Input.GetKeyDown(KeyCode.V))
+            {
+                _controller = Gamemanager.SwitchCharacter();
             }
 
         }
