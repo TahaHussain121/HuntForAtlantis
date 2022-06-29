@@ -27,7 +27,7 @@ public class Gamemanager : Singleton<Gamemanager>
     {
         _activeCaracterController.GetComponent<PlayerFighter>().enabled = false;
         _activeCaracterController = _activeCaracterController == Controller1 ? Controller2 : Controller1;
-        print("New Active Character = " + _activeCaracterController.name);
+        //print("New Active Character = " + _activeCaracterController.name);
         MainVCam.Follow = _activeCaracterController.transform;
         _activeCaracterController.GetComponent<PlayerFighter>().enabled = true;
         return _activeCaracterController;

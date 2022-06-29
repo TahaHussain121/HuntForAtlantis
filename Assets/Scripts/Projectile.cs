@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] Vector3 speed;
+    public float speed;
+
     private void Start()
     {
         Destroy(gameObject, 5f);
     }
     private void Update()
     {
-        transform.position += speed * Time.deltaTime;
+        transform.position += transform.up * Time.deltaTime * speed;
     }
     private void OnTriggerEnter(Collider other)
     {

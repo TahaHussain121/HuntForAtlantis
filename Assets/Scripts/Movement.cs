@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,8 @@ public class Movement : MonoBehaviour
     private CharacterController _controller;
     [SerializeField]
     private float _speed;
+    [SerializeField]
+    private float _rotationMultiplier;
     [SerializeField]
     private float _gravity;
     [SerializeField]
@@ -22,12 +25,18 @@ public class Movement : MonoBehaviour
     private float _originalheight;
     [SerializeField]
     private float _newheight;
-    [SerializeField]
-    private Transform _modeltransform;
+    //[SerializeField]
+    //private Transform _modeltransform;
+    public Animator _anim;
+    public PlayerFighter _fighter;
+
+
 
     public void Start()
     {
         _originalheight = _controller.height;
+        _anim = _controller.GetComponent<Animator>();
+        _fighter = _controller.GetComponent<PlayerFighter>();
     }
     public void Update()
     {
@@ -52,8 +61,13 @@ public class Movement : MonoBehaviour
             }
             else if (Input.GetKeyDown(KeyCode.V))
             {
+                _anim.SetBool("Running", false);
+
                 _controller = Gamemanager.SwitchCharacter();
+                _anim = _controller.GetComponent<Animator>();
+                _fighter = _controller.GetComponent<PlayerFighter>();
             }
+            HandleAnimation(true);
 
         }
         else
@@ -65,27 +79,62 @@ public class Movement : MonoBehaviour
                 DoubleJump();
             }
             Gravity();
+            HandleAnimation(true);
         }
-
-
-           
-
-        _controller.Move(VelocityCalculator(_yvelocity) * Time.deltaTime);
-
+        if (!_fighter.isAttacking)
+        {
+            _controller.Move(VelocityCalculator(_yvelocity) * Time.deltaTime);
+            HandleRotation();
+        }
     }
+
+    private void HandleRotation()
+    {
+        float axis = Input.GetAxis("Horizontal");
+        if (axis > 0)
+        {
+            if (_fighter.directionFacing != Vector3.right)
+            {
+                Quaternion toRotate = Quaternion.LookRotation(Vector3.right, Vector3.up);
+
+                _controller.transform.rotation = Quaternion.Slerp(_controller.transform.rotation,
+                                            toRotate, 
+                                            Time.deltaTime * _rotationMultiplier);
+                if (_controller.transform.rotation == toRotate)
+                {
+                    _fighter.directionFacing = Vector3.right;
+                }
+            }
+        }
+        else if (axis < 0)
+        {
+            if (_fighter.directionFacing != Vector3.left)
+            {
+                Quaternion toRotate = Quaternion.LookRotation(Vector3.left, Vector3.up);
+                _controller.transform.rotation = Quaternion.Slerp(_controller.transform.rotation,
+                                            toRotate,
+                                            Time.deltaTime * _rotationMultiplier);
+                if (_controller.transform.rotation == toRotate)
+                {
+                    _fighter.directionFacing = Vector3.left;
+                }
+            }
+        }
+    }
+
     public void Jump()
     {
 
         _yvelocity = _jumpheight;
         _candoublejump = true;
+        _anim.SetTrigger("Jump");
 
     }
     public void DoubleJump()
     {
-
         _yvelocity += _jumpheight;
         _candoublejump = false;
-
+        _anim.SetTrigger("Jump");
     }
     public void Crouch(bool input)
     {
@@ -121,6 +170,21 @@ public class Movement : MonoBehaviour
         Vector3 velocity = dir * _speed;
         velocity.y = updatevelocity;
         return velocity;
+    }
+
+    private void HandleAnimation(bool grounded)
+    {
+        if (grounded)
+        {
+            if (Input.GetAxis("Horizontal") != 0)
+            {
+                _anim.SetBool("Running", true);
+            }
+            else
+            {
+                _anim.SetBool("Running", false);
+            }
+        }
     }
 
 }
