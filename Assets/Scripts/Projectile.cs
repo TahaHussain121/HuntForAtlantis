@@ -16,11 +16,11 @@ public class Projectile : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        print("trigger detected");
-        if (other.tag == "Enemy")
-        {
-            print("collision with enemy detected");
-            Destroy(gameObject);
-        }
+        //print("trigger detected");
+        //if (other.tag == "Enemy")
+        //{
+        //    print("collision with enemy detected");
+        //    Destroy(gameObject);
+        //}
     }
 }
