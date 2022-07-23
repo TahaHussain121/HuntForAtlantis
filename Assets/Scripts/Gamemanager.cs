@@ -8,28 +8,33 @@ public class Gamemanager : Singleton<Gamemanager>
     [SerializeField]
     private CinemachineVirtualCamera mainVCam;
     [SerializeField]
-    private CharacterController _controller_1;
+    private Transform character1;
     [SerializeField]
-    private CharacterController _controller_2;
+    private Transform character2;
 
-    public static CharacterController Controller1 => Instance._controller_1;
-    public static CharacterController Controller2 => Instance._controller_2;
+    public static IInputHandler Character1 => Instance.character1.GetComponent<IInputHandler>();
+    public static IInputHandler Character2 => Instance.character2.GetComponent<IInputHandler>();
     public static CinemachineVirtualCamera MainVCam=> Instance.mainVCam;
 
+    private IInputHandler activeIInputHandler;
+    public static IInputHandler ActiveIInputHandler => Instance.activeIInputHandler;
 
-    private static CharacterController _activeCaracterController;
     private void Awake()
     {
-        _activeCaracterController = _controller_1;
+        activeIInputHandler = Character1;
     }
 
-    public static CharacterController SwitchCharacter()
+    public static void SwitchCharacter()
     {
-        _activeCaracterController.GetComponent<PlayerFighter>().enabled = false;
-        _activeCaracterController = _activeCaracterController == Controller1 ? Controller2 : Controller1;
-        //print("New Active Character = " + _activeCaracterController.name);
-        MainVCam.Follow = _activeCaracterController.transform;
-        _activeCaracterController.GetComponent<PlayerFighter>().enabled = true;
-        return _activeCaracterController;
+        Instance.activeIInputHandler = ActiveIInputHandler == Character1 ? Character2 : Character1;
+        SwitchCamTarget();
     }
+
+    
+    private static void SwitchCamTarget()
+    {
+        MainVCam.Follow = ActiveIInputHandler.GetTransform();
+    }
+
+    
 }
