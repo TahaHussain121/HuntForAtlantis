@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerFighter : MonoBehaviour
 {
+    
     [SerializeField] GameObject rangeProjectile;
     [SerializeField] GameObject bow;
     [SerializeField] private float projectileSpeed;

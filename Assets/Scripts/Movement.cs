@@ -46,7 +46,7 @@ public class Movement : MonoBehaviour
             {
                 Jump();
             }
-            else if (Input.GetKeyDown(KeyCode.C))
+            else if (Input.GetKeyDown(KeyCode.C))// this has problem need to work on 3d model too
             {
                 _iscrouching = true;
                 Crouch(_iscrouching);
