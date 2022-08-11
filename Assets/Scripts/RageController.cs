@@ -1,18 +1,46 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class RageController : MonoBehaviour
 {
-    [SerializeField] 
-    int rageValue = 0;
+    [SerializeField]
+    Slider rageSlider;
 
-    public void UpdateRage(int val)
+    [SerializeField]
+    int currentRagevalue = 0;
+    [SerializeField]
+    int MaxRagevalue = 100;
+
+    public void LateUpdate()
     {
-        rageValue += val;
+        SetDirection();
+    }
+    public void IncreaseRage(int val)
+    {
+        if (currentRagevalue < MaxRagevalue)
+        {
+            currentRagevalue += val;
+            rageSlider.value = currentRagevalue;
+        }
+    }
+    public void DecreaseRage(int val)
+    {
+        if (currentRagevalue > 0 && currentRagevalue > val)
+        {
+            currentRagevalue -= val;
+            rageSlider.value = currentRagevalue;
+        }
     }
     public void ResetRage()
     {
-        rageValue = 0 ;
+        currentRagevalue = 0;
+        rageSlider.value = currentRagevalue;
+    }
+
+    void SetDirection()
+    {
+        rageSlider.transform.LookAt(Camera.main.transform);
+        rageSlider.transform.Rotate(0, 180, 0);
     }
 }

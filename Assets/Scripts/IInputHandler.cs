@@ -8,3 +8,8 @@ public interface IInputHandler
     void PrimaryAttack();
     void SpecialAttack();
 }
+public interface IAttackable
+{
+   
+    void OnAttacked(CharacterType ctype,AttackType atype);
+}
