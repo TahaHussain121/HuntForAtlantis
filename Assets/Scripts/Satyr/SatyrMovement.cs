@@ -8,10 +8,12 @@ public class SatyrMovement : MonoBehaviour
     [SerializeField] float rotationSpeed;
     [SerializeField] float jumpForce;
     [SerializeField] float gravity;
+    float val = 0;
 
     private SatyrFighter fighter;
     private Animator anim;
     private CharacterController characterController;
+
 
     private void Awake()
     {
@@ -23,7 +25,11 @@ public class SatyrMovement : MonoBehaviour
     public void MoveHorizontally(float horiAxis)
     {
         if (fighter.isAttacking) return;
-        characterController.Move(new Vector3(lateralMovementSpeed * horiAxis, -gravity, 0) * Time.deltaTime);
+
+        val -= gravity * Time.deltaTime;
+        characterController.Move(new Vector3(lateralMovementSpeed * horiAxis, val*3, 0) * Time.deltaTime);
+      
+        
         HandleRotation(horiAxis) ;
         HandleAnimation();
 
@@ -33,10 +39,19 @@ public class SatyrMovement : MonoBehaviour
         if (fighter.isAttacking) return;
         if (characterController.isGrounded)
         {
-            //print("jump() called");
-            characterController.Move(Vector3.up * (jumpForce - gravity) * Time.deltaTime);
+            print("jump() called");
+
+            anim.SetTrigger("Jump");
+            val = jumpForce;
+
+            //characterController.Move(Vector3.up * (val) );
+
         }
+
+        
     }
+
+
     private void HandleRotation(float axis)
     {
         if (axis > 0)

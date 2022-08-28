@@ -22,11 +22,28 @@ public class Gamemanager : Singleton<Gamemanager>
     private void Awake()
     {
         activeIInputHandler = Character1;
+        Switch(Instance.character1, true);
+        Switch(Instance.character2, false);
     }
 
     public static void SwitchCharacter()
     {
-        Instance.activeIInputHandler = ActiveIInputHandler == Character1 ? Character2 : Character1;
+        if (ActiveIInputHandler == Character1)
+        {
+            Instance.activeIInputHandler = Character2;
+
+            Switch(Instance.character2, true);
+
+            Switch(Instance.character1, false);
+        }
+        else
+        {
+            Instance.activeIInputHandler = Character2;
+            Switch(Instance.character1, true);
+
+            Switch(Instance.character2, false);
+        }
+
         SwitchCamTarget();
     }
 
@@ -36,5 +53,10 @@ public class Gamemanager : Singleton<Gamemanager>
         MainVCam.Follow = ActiveIInputHandler.GetTransform();
     }
 
-    
+    private static void Switch(Transform Char,  bool chControl)
+    {
+
+        Char.GetComponent<CharacterController>().enabled = chControl;
+
+    }
 }
