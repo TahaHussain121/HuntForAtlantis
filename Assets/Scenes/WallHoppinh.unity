@@ -583,7 +583,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lateralMovementSpeed: 9
   jumpForce: 100
-  gravity: 0.75
+  gravityInAir: 1
+  gravityOnWall: 0.7
 --- !u!143 &1347092486
 CharacterController:
   m_ObjectHideFlags: 0

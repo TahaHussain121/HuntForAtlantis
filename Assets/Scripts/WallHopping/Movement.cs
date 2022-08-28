@@ -8,12 +8,14 @@ public class Movement : MonoBehaviour
     [SerializeField] float lateralMovementSpeed;
     //[SerializeField] float rotationSpeed;
     [SerializeField] float jumpForce;
-    [SerializeField] float gravity;
+    [SerializeField] float gravityInAir;
+    [SerializeField] float gravityOnWall;
 
     private MinotaurFighter fighter;
     private Animator anim;
     private CharacterController characterController;
     private bool canWallHop;
+    private bool isInContactWithWall;
 
     private void Awake()
     {
@@ -29,7 +31,11 @@ public class Movement : MonoBehaviour
     public void MoveHorizontally(float horiAxis)
     {
         //if (fighter.isAttacking) return;
-        characterController.Move(new Vector3(lateralMovementSpeed * horiAxis, -gravity, 0) * Time.deltaTime);
+        if (isInContactWithWall)
+        {
+            characterController.Move(new Vector3(lateralMovementSpeed * horiAxis, -gravityOnWall, 0) * Time.deltaTime);
+        }
+        else characterController.Move(new Vector3(lateralMovementSpeed * horiAxis, -gravityInAir, 0) * Time.deltaTime);
         //HandleRotation(horiAxis);
         //HandleAnimation();
 
@@ -41,23 +47,16 @@ public class Movement : MonoBehaviour
         {
             //print("jump() called");
             canWallHop = false;
-            characterController.Move(Vector3.up * (jumpForce - gravity) * Time.deltaTime);
+            characterController.Move(Vector3.up * (jumpForce - gravityInAir) * Time.deltaTime);
         }
     }
-    //private void OnControllerColliderHit(ControllerColliderHit hit)
-    //{
-    //    if (hit.transform.tag == "Wall")
-    //    {
-    //        print("canWallHop = true");
-    //        canWallHop = true;
-    //    }
-    //}
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.transform.tag == "Wall")
         {
             print("canWallHop = true");
             canWallHop = true;
+            isInContactWithWall = true;
         }
     }
     private void OnCollisionExit(Collision collision)
@@ -66,6 +65,7 @@ public class Movement : MonoBehaviour
         {
             print("canWallHop = false");
             canWallHop = false;
+            isInContactWithWall = false;
         }
     }
 
