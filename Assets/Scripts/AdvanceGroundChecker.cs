@@ -1,21 +1,22 @@
-using SimpleMan.VisualRaycast;
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using static SimpleMan.VisualRaycast.Demo.Raycaster;
+
 
 public class AdvanceGroundChecker : MonoBehaviour
 {
+
+    /// simple raycast data
+
     [SerializeField]
-    float adjustx = 0.02f;
+    float xAdjuster;
     [SerializeField]
-    float adjustforwadX = 0.02f;
+    float yAdjuster;
     [SerializeField]
-    float adjustBackX = 0.02f;
+    float slipSpeed;
     CharacterController charCtrl;
-    public CastType castType = CastType.Raycast;
-    bool slip;
     void Start()
     {
         charCtrl = GetComponent<CharacterController>();
@@ -23,65 +24,71 @@ public class AdvanceGroundChecker : MonoBehaviour
 
     void Update()
     {
-        // RaycastHit hit;
-        CastResult Down;
-       
-        CastResult BackwardDown;
-        //CastResult frontdir;
-        //CastResult backdir;
+
+        AdvGroundSimpleRaycast();
+
+    }
+
+    
+
+    public void AdvGroundSimpleRaycast()
+    {
+
+        if (charCtrl.isGrounded)
+        {
+
+           // Debug.Log("here");
+            RaycastHit hit;
+
+            Vector3 middle = transform.position + Vector3.up * yAdjuster;
 
 
-        //Vector3 p1 = transform.position + charCtrl.center;
-        //float distanceToObstacle = 0;
+            Vector3 front = transform.forward * xAdjuster;
 
-        Down = this.Raycast(new Vector3(transform.position.x + adjustx, transform.position.y, transform.position.z), -transform.up, 30f);
-      
-        BackwardDown = this.Raycast(new Vector3(transform.position.x + adjustBackX, transform.position.y, transform.position.z), -transform.up, 30f);
-      
-            string downHit = Down.FirstHit.collider.name;
-         
-            string backHit = BackwardDown.FirstHit.collider.name;
+            Vector3 Back = -transform.forward * xAdjuster;
 
-         if ((downHit == "Quad"|| backHit=="Quad")&&!(downHit == "Quad" && backHit == "Quad"))
-         {
-            float hitpos;
-            float distance=0;
-            Vector3 direction=Vector3.zero;
-            if (Down)
+            float dis = xAdjuster;
+
+            Ray frontRay = new Ray(middle, front);
+            Ray backRay = new Ray(middle, Back);
+
+            if (Physics.Raycast(frontRay, out hit, dis) || Physics.Raycast(backRay, out hit, dis))
             {
-                hitpos = Down.FirstHit.collider.transform.position.y;
 
-                distance = GetDistance(hitpos);
-                direction = Down.FirstHit.collider.transform.position.normalized;
-            }
-            if (BackwardDown)
-            {
-                hitpos = BackwardDown.FirstHit.collider.transform.position.y;
+           // Debug.Log(hit.collider.name);
 
-                distance = GetDistance(hitpos);
-                direction = BackwardDown.FirstHit.collider.transform.position.normalized;
+                slip(hit.normal);
 
             }
-
-            Debug.Log("direction" + direction);
-
-                if (distance >= 9 && distance < 11)
-                {
-                   
-
-
-                }
-
-            }
-
-        
-
 
         }
-      
-    public float GetDistance( float B)
-    {
-       return Vector3.Distance(new Vector3(0, transform.position.y, 0), new Vector3(0, B, 0));
     }
-}
 
+    public void slip(Vector3 dir) 
+    {
+           // Debug.Log("Slip called");
+
+        charCtrl.Move(((dir*slipSpeed)+Vector3.down)/**Time.deltaTime*/);
+    }
+
+    void OnDrawGizmos()
+    {
+        Vector3 ray_spwan_pos = transform.position + Vector3.up * yAdjuster;
+        Vector3 forward = transform.forward * xAdjuster;
+        Vector3 back = -transform.forward * xAdjuster;
+        Vector3 right = transform.right * xAdjuster;
+        Vector3 left = -transform.right * xAdjuster;
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(ray_spwan_pos, forward);
+        Gizmos.DrawRay(ray_spwan_pos, back);
+        Gizmos.DrawRay(ray_spwan_pos, right);
+        Gizmos.DrawRay(ray_spwan_pos, left);
+    }
+        public float GetDistance(Vector3 A, Vector3 B)
+    {
+        return Vector3.Distance(new Vector3(0, A.y, 0), new Vector3(0, B.y, 0));
+    }
+
+
+    ///
+}

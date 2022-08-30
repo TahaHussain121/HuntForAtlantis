@@ -44,11 +44,8 @@ public class SatyrMovement : MonoBehaviour
             anim.SetTrigger("Jump");
             val = jumpForce;
 
-            //characterController.Move(Vector3.up * (val) );
-
         }
 
-        
     }
 
 

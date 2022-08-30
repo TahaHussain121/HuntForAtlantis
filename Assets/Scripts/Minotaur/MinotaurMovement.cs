@@ -9,6 +9,7 @@ public class MinotaurMovement : MonoBehaviour
     [SerializeField] float rotationSpeed;
     [SerializeField] float jumpForce;
     [SerializeField] float gravity;
+    float val = 0;
 
     private MinotaurFighter fighter;
     private Animator anim;
@@ -28,19 +29,26 @@ public class MinotaurMovement : MonoBehaviour
     public void MoveHorizontally(float horiAxis)
     {
         if (fighter.isAttacking) return;
-        characterController.Move(new Vector3(lateralMovementSpeed * horiAxis, -gravity, 0) * Time.deltaTime);
-        HandleRotation(horiAxis);
-        //HandleAnimation();
 
+        val -= gravity * Time.deltaTime;
+        characterController.Move(new Vector3(lateralMovementSpeed * horiAxis, val * 3, 0) * Time.deltaTime);
+
+
+        HandleRotation(horiAxis);
+        HandleAnimation();
     }
     public void Jump()
     {
         if (fighter.isAttacking) return;
         if (characterController.isGrounded)
         {
-            //print("jump() called");
-            characterController.Move(Vector3.up * (jumpForce - gravity) * Time.deltaTime);
+            print("jump() called");
+
+            anim.SetTrigger("Jump");
+            val = jumpForce;
+
         }
+
     }
     private void HandleRotation(float axis)
     {
