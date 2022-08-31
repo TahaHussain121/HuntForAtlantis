@@ -38,7 +38,7 @@ public class Gamemanager : Singleton<Gamemanager>
         }
         else
         {
-            Instance.activeIInputHandler = Character2;
+            Instance.activeIInputHandler = Character1;
             Switch(Instance.character1, true);
 
             Switch(Instance.character2, false);
