@@ -2,14 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MinotaurInputHandler : MonoBehaviour, IInputHandler
+public class MinotaurInputHandler : MonoBehaviour, IInputHandler, ICharacterManager
 {
-    MinotaurFighter minotaurFighter;
-    MinotaurMovement minotaurMovement;
+
+    IFighter minotaurFighter;
+    IMovement minotaurMovement;
+    RageController rageController;
+    
     private void Awake()
     {
-        minotaurFighter = GetComponent<MinotaurFighter>();
-        minotaurMovement = GetComponent<MinotaurMovement>();
+        minotaurFighter = GetComponent<IFighter>();
+        minotaurMovement = GetComponent<IMovement>();
+        rageController = GetComponent<RageController>();
     }
     public Transform GetTransform()
     {
@@ -29,6 +33,7 @@ public class MinotaurInputHandler : MonoBehaviour, IInputHandler
     public void PrimaryAttack()
     {
         minotaurFighter.PrimaryAttack();
+        rageController.IncreaseRage(rageController.primaryAttackPoints);
     }
 
     public void SpecialAttack()
@@ -36,4 +41,18 @@ public class MinotaurInputHandler : MonoBehaviour, IInputHandler
         minotaurFighter.SpecialAttack();
     }
 
+    public IFighter GetCharacterFighter()
+    {
+        return minotaurFighter;
+    }
+
+    public IMovement GetCharacterMovement()
+    {
+        return minotaurMovement;
+    }
+
+    public RageController GetRageController()
+    {
+        return rageController;
+    }
 }

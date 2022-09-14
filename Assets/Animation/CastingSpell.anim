@@ -110320,7 +110320,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 3.1666667
-    functionName: EndSpecialRangeAttack
+    functionName: OnArrowSpawningAnimEnd
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

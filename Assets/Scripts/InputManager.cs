@@ -23,11 +23,11 @@ public class InputManager : MonoBehaviour
         }
         Gamemanager.ActiveIInputHandler.MoveHorizontally(Input.GetAxis("Horizontal"));
         
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             Gamemanager.ActiveIInputHandler.PrimaryAttack();
         }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+        if (Input.GetKeyDown(KeyCode.F))
         {
             Gamemanager.ActiveIInputHandler.SpecialAttack();
         }

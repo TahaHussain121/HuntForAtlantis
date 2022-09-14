@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MinotaurMovement : MonoBehaviour
+public class MinotaurMovement : MonoBehaviour, IMovement
 {
     [SerializeField] float lateralMovementSpeed;
     [SerializeField] float rotationSpeed;

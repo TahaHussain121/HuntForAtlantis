@@ -10,6 +10,22 @@ public interface IInputHandler
 }
 public interface IAttackable
 {
-   
     void OnAttacked(CharacterType ctype,AttackType atype);
+}
+public interface ICharacterManager
+{
+    IFighter GetCharacterFighter();
+    IMovement GetCharacterMovement();
+    RageController GetRageController();
+}
+public interface IFighter
+{
+    void PrimaryAttack();
+    void SpecialAttack();
+    void OnRageBarFilled();
+}
+public interface IMovement
+{
+    void Jump();
+    void MoveHorizontally(float hor);
 }
