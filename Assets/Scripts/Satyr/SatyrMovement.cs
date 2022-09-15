@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SatyrMovement : MonoBehaviour
+public class SatyrMovement : MonoBehaviour, IMovement
 {
     [SerializeField] float lateralMovementSpeed;
     [SerializeField] float rotationSpeed;

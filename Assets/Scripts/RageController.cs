@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 public class RageController : MonoBehaviour
 {
+    [SerializeField] public int primaryAttackPoints;
+    [SerializeField] public int attackedWithMeleePoints;
+    [SerializeField] public int attackedWithRangePoints;
+
     [SerializeField]
     Slider rageSlider;
 
@@ -12,6 +16,12 @@ public class RageController : MonoBehaviour
     [SerializeField]
     int MaxRagevalue = 100;
 
+    private ICharacterManager characterManager;
+
+    private void Awake()
+    {
+        characterManager = GetComponent<ICharacterManager>();
+    }
     public void LateUpdate()
     {
         SetDirection();
@@ -21,7 +31,14 @@ public class RageController : MonoBehaviour
         if (currentRagevalue < MaxRagevalue)
         {
             currentRagevalue += val;
+            Mathf.Min(currentRagevalue, MaxRagevalue);
+
             rageSlider.value = currentRagevalue;
+
+            if (currentRagevalue >= MaxRagevalue)
+            {
+                characterManager.GetCharacterFighter().OnRageBarFilled();
+            }
         }
     }
     public void DecreaseRage(int val)
@@ -40,7 +57,10 @@ public class RageController : MonoBehaviour
 
     void SetDirection()
     {
-        rageSlider.transform.LookAt(Camera.main.transform);
-        rageSlider.transform.Rotate(0, 180, 0);
+        if (rageSlider.transform.forward != Vector3.forward)
+        {
+            rageSlider.transform.LookAt(Camera.main.transform);
+            rageSlider.transform.Rotate(0, 180, 0);
+        }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SatyrFighter : MonoBehaviour
+public class SatyrFighter : MonoBehaviour, IFighter, IAttackable
 {
     [SerializeField] GameObject rangeProjectile;
     [SerializeField] GameObject bow;
@@ -16,39 +16,34 @@ public class SatyrFighter : MonoBehaviour
     [SerializeField] private bool isRageBarFull = false;
 
     private Animator anim;
+    private ICharacterManager characterManager;
     public bool isAttacking;
     public Vector3 directionFacing;
+    private bool isInvincible;
+
     private void Awake()
     {
         directionFacing = Vector3.right;
         anim = GetComponent<Animator>();
+        characterManager = GetComponent<ICharacterManager>();
     }
-    internal void PrimaryAttack()
+    public void PrimaryAttack()
     {
-        RangeAttack();
+        StartArrowShootingAnim();
     }
-    internal void SpecialAttack()
+    public void SpecialAttack()
     {
         if (isRageBarFull)
         {
-            SpecialRangeAttack();
-        }
-        isRageBarFull = false;
-    }
-    private void SpecialRangeAttack()
-    {
-        if (!isAttacking)
-        {
-            isAttacking = true;
-            anim.SetTrigger("SpecialRangeAttack");
-            //print("SpecialRangeAttack");
+            StartArrowSpawningAnim();
         }
     }
-    private void RangeAttack()
+    private void StartArrowShootingAnim()
     {
         if (currentAmmo > 0 && !isAttacking)
         {
             isAttacking = true;
+
             if (directionFacing == Vector3.right)
             {
                 transform.rotation = Quaternion.LookRotation(Vector3.back, Vector3.up);
@@ -57,10 +52,36 @@ public class SatyrFighter : MonoBehaviour
             {
                 transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
             }
+
             RemoveAmmo(1);
-            anim.SetTrigger("RangeAttack");
+
+            anim.SetTrigger("ShootArrow");
             //print("Range attack");
         }
+    }
+    private void StartArrowSpawningAnim()
+    {
+        if (!isAttacking)
+        {
+            isAttacking = true;
+
+            anim.SetTrigger("SpawnArrows");
+            //print("SpecialRangeAttack");
+        }
+    }
+    public void OnArrowShootingAnimEnd() // called from animation event
+    {
+        //print("OnRangeAttackAnimEnd() called");
+        Invoke("RotateBack", 0.5f);
+        ShootProjectile();
+        isAttacking = false;
+    } 
+    public void OnArrowSpawningAnimEnd() // called from animation event
+    {
+        //print("OnSpecialRangeAttackEnd() called");
+        ArrowSpawner.SpawnArrows();
+        isAttacking = false;
+        OnRageBarEmptied();
     }
     public void AddAmmo(int toAdd)
     {
@@ -69,19 +90,6 @@ public class SatyrFighter : MonoBehaviour
     public void RemoveAmmo(int toRemove)
     {
         Mathf.Clamp(currentAmmo -= toRemove, 0, maxAmmo);
-    }
-    public void EndRangeAttack()
-    {
-        //print("EndRangeAttack() called");
-        Invoke("RotateBack", 0.5f);
-        ShootProjectile();
-        isAttacking = false;
-    }
-    public void EndSpecialRangeAttack()
-    {
-        //print("EndSpecialRangeAttack() called");
-        ArrowSpawner.SpawnArrows();
-        isAttacking = false;
     }
     private void RotateBack()
     {
@@ -114,5 +122,32 @@ public class SatyrFighter : MonoBehaviour
     public void HealHealthByPercentage(float percentage)
     {
         currentHealth = Mathf.Clamp(currentHealth += Mathf.RoundToInt(currentHealth * (percentage / 100)), 0, maxHealth);
+    }
+    public void OnRageBarFilled()
+    {
+        isRageBarFull = true;
+    }
+    private void OnRageBarEmptied()
+    {
+        isRageBarFull = false;
+        characterManager.GetRageController().ResetRage();
+    }
+    public void OnAttacked(CharacterType ctype, AttackType atype) // NOTE: what is the use for cType?
+    {
+        if (isInvincible) return;
+
+        RageController rageController = characterManager.GetRageController();
+
+        switch (atype)
+        {
+            case AttackType.Melee:
+                rageController.IncreaseRage(rageController.attackedWithMeleePoints);
+                break;
+
+            case AttackType.Ranged:
+                rageController.IncreaseRage(rageController.attackedWithRangePoints);
+                break;
+        }
+
     }
 }

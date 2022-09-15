@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SatyrInputHandler : MonoBehaviour, IInputHandler,IAttackable
+public class SatyrInputHandler : MonoBehaviour, IInputHandler,ICharacterManager
 {
-    SatyrFighter satyrFighter;
-    SatyrMovement satyrMovement;
-    RageController rageBar;
+    IFighter satyrFighter;
+    IMovement satyrMovement;
+    RageController rageController;
 
     private void Awake()
     {
-        satyrFighter = GetComponent<SatyrFighter>();
-        satyrMovement = GetComponent<SatyrMovement>();
-        rageBar = GetComponent<RageController>();
+        satyrFighter = GetComponent<IFighter>();
+        satyrMovement = GetComponent<IMovement>();
+        rageController = GetComponent<RageController>();
     }
     public Transform GetTransform()
     {
@@ -32,7 +32,7 @@ public class SatyrInputHandler : MonoBehaviour, IInputHandler,IAttackable
     public void PrimaryAttack()
     {
         satyrFighter.PrimaryAttack();
-        rageBar.IncreaseRage(3);
+        rageController.IncreaseRage(rageController.primaryAttackPoints);
     }
 
     public void SpecialAttack()
@@ -40,19 +40,18 @@ public class SatyrInputHandler : MonoBehaviour, IInputHandler,IAttackable
         satyrFighter.SpecialAttack();
     }
 
-    
-    public void OnAttacked(CharacterType ctype, AttackType atype)
+    public IFighter GetCharacterFighter()
     {
-        switch (atype)
-        {
-            case AttackType.Melee:
-                rageBar.IncreaseRage(10);
-                break;
-            case AttackType.Ranged:
-                rageBar.IncreaseRage(5);
+        return satyrFighter;
+    }
 
-                break;
-        }
+    public IMovement GetCharacterMovement()
+    {
+        return satyrMovement;
+    }
 
+    public RageController GetRageController()
+    {
+        return rageController;
     }
 }
