@@ -7,7 +7,7 @@ public class MinotaurFighter : MonoBehaviour, IFighter, IAttackable
 {
     [SerializeField] int maxHealth = 150;
     [SerializeField] int currentHealth = 150;
-    [SerializeField] private bool isRageBarFull = false;
+    [SerializeField] private bool isRageBarFull = false;             
 
     private Animator anim;
     private ICharacterManager characterManager;
@@ -77,7 +77,7 @@ public class MinotaurFighter : MonoBehaviour, IFighter, IAttackable
         isRageBarFull = false;
         characterManager.GetRageController().ResetRage();
     }
-    public void OnAttacked(CharacterType ctype, AttackType atype) // NOTE: what is the use for cType?
+    public void OnAttacked( AttackType atype) // NOTE: what is the use for cType?
     {
         if (isInvincible) return;
 

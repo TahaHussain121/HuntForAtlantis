@@ -10,7 +10,7 @@ public interface IInputHandler
 }
 public interface IAttackable
 {
-    void OnAttacked(CharacterType ctype,AttackType atype);
+    void OnAttacked(AttackType atype);
 }
 public interface ICharacterManager
 {

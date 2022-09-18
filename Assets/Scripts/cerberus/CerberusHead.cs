@@ -4,24 +4,40 @@ using UnityEngine;
 
 public class CerberusHead: MonoBehaviour
 {
-    public Transform head;
-    public Transform firePoint;
-    public GameObject fireball;
-    public float fireballForce;
-    // private Rigidbody rg;
+    [SerializeField] Transform head;
+    [SerializeField] Transform firePoint;
+    [SerializeField] GameObject fireball;
+    [SerializeField] float fireballForce;
+    [SerializeField] Vector3 fireballdir;
+   // [SerializeField] bool IsfireballThrown;
+
     [ContextMenu("TestFireball")]
     void TestFireball()
     {
-        ThrowFireball(-transform.right);
+       // ThrowFireball(-transform.right);
     }
     public void Awake()
     {
         head = this.transform;
     }
-    private void ThrowFireball(Vector3 Dir)
+    public void ThrowFireball(Transform target)
     {
+        firePoint.LookAt(target);
+        //firePoint.rotation = rot;
+        Vector3 Dir= (target.position - firePoint.position).normalized;
+        fireballdir = Dir;
         GameObject fb = Instantiate(fireball, firePoint);
-        fb.GetComponent<Rigidbody>().AddForce(Dir * fireballForce,ForceMode.Impulse);
+        fb.GetComponent<Rigidbody>().AddForce(Dir* fireballForce, ForceMode.Impulse);
+        Destroy(fb, 1.5f);
     }
+
+    //public bool GetFireballThrown()
+    //{
+    //    return IsfireballThrown;
+    //}
+    //public void SetFireballThrown(bool Val)
+    //{
+    //    IsfireballThrown=Val;
+    //}
 
 }
