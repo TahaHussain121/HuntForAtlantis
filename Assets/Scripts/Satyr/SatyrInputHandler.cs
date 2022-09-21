@@ -32,12 +32,12 @@ public class SatyrInputHandler : MonoBehaviour, IInputHandler,ICharacterManager
     public void PrimaryAttack()
     {
         satyrFighter.PrimaryAttack();
-        rageController.IncreaseRage(rageController.primaryAttackPoints);
+        //rageController.IncreaseRage(rageController.primaryAttackPoints);
     }
 
     public void SpecialAttack()
     {
-        satyrFighter.SpecialAttack();
+        satyrFighter.RageAttack();
     }
 
     public IFighter GetCharacterFighter()

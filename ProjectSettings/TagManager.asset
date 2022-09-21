@@ -12,12 +12,12 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Satyr
   - Water
   - UI
   - Enemy
   - Projectile
-  - 
+  - HoppableWall
   - 
   - 
   - 

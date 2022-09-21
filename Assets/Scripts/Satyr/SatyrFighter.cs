@@ -31,7 +31,7 @@ public class SatyrFighter : MonoBehaviour, IFighter, IAttackable
     {
         StartArrowShootingAnim();
     }
-    public void SpecialAttack()
+    public void RageAttack()
     {
         if (isRageBarFull)
         {
@@ -148,6 +148,9 @@ public class SatyrFighter : MonoBehaviour, IFighter, IAttackable
                 rageController.IncreaseRage(rageController.attackedWithRangePoints);
                 break;
         }
-
+    }
+    public void OnPrimaryAtttackLanded()
+    {
+        characterManager.GetRageController().IncreaseRage(characterManager.GetRageController().primaryAttackPoints);
     }
 }

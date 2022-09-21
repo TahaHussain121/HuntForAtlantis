@@ -33,12 +33,12 @@ public class MinotaurInputHandler : MonoBehaviour, IInputHandler, ICharacterMana
     public void PrimaryAttack()
     {
         minotaurFighter.PrimaryAttack();
-        rageController.IncreaseRage(rageController.primaryAttackPoints);
+        //rageController.IncreaseRage(rageController.primaryAttackPoints);
     }
 
     public void SpecialAttack()
     {
-        minotaurFighter.SpecialAttack();
+        minotaurFighter.RageAttack();
     }
 
     public IFighter GetCharacterFighter()

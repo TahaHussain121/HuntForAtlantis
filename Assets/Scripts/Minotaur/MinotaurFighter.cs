@@ -7,13 +7,16 @@ public class MinotaurFighter : MonoBehaviour, IFighter, IAttackable
 {
     [SerializeField] int maxHealth = 150;
     [SerializeField] int currentHealth = 150;
+    [SerializeField] float dashSpeed;
     [SerializeField] private bool isRageBarFull = false;
 
     private Animator anim;
     private ICharacterManager characterManager;
     public bool isAttacking = false;
     public Vector3 directionFacing;
-    private bool isInvincible;
+    private bool isInvincibleInRage;
+
+    //public bool IsInvincibleInRage { get => isInvincibleInRage; }
 
     private void Awake()
     {
@@ -21,11 +24,12 @@ public class MinotaurFighter : MonoBehaviour, IFighter, IAttackable
         anim = GetComponent<Animator>();
         characterManager = GetComponent<ICharacterManager>();
     }
+    
     public void PrimaryAttack()
     {
         StartMeleeAttackAnim();
     }
-    public void SpecialAttack()
+    public void RageAttack()
     {
         if (isRageBarFull)
         {
@@ -47,10 +51,21 @@ public class MinotaurFighter : MonoBehaviour, IFighter, IAttackable
         if(!isAttacking)
         {
             isAttacking = true;
-            isInvincible = true;
+            isInvincibleInRage = true;
 
             anim.SetTrigger("DashAttack");
-            // dash attack
+            StartCoroutine("MoveForwardDuringDash");
+        }
+    }
+    private IEnumerator MoveForwardDuringDash()
+    {
+        while (isInvincibleInRage)
+        {
+            yield return new WaitForEndOfFrame();
+
+            transform.Translate(directionFacing * Time.deltaTime * dashSpeed, Space.World);
+            //transform.Translate(1 * Time.deltaTime * dashSpeed, 0 , 0);
+
         }
     }
     public void OnMeleeAnimEnd() // called from animation event
@@ -60,7 +75,7 @@ public class MinotaurFighter : MonoBehaviour, IFighter, IAttackable
     public void OnDashAnimEnd() // called from animation event
     {
         isAttacking = false;
-        isInvincible = false;
+        isInvincibleInRage = false;
 
         OnRageBarEmptied();
     }
@@ -79,7 +94,7 @@ public class MinotaurFighter : MonoBehaviour, IFighter, IAttackable
     }
     public void OnAttacked(CharacterType ctype, AttackType atype) // NOTE: what is the use for cType?
     {
-        if (isInvincible) return;
+        if (isInvincibleInRage) return;
 
         RageController rageController = characterManager.GetRageController();
 
@@ -94,4 +109,9 @@ public class MinotaurFighter : MonoBehaviour, IFighter, IAttackable
                 break;
         }
     }
+    public void OnPrimaryAtttackLanded()
+    {
+        characterManager.GetRageController().IncreaseRage(characterManager.GetRageController().primaryAttackPoints);
+    }
+
 }

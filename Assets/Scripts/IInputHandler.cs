@@ -21,8 +21,9 @@ public interface ICharacterManager
 public interface IFighter
 {
     void PrimaryAttack();
-    void SpecialAttack();
+    void RageAttack();
     void OnRageBarFilled();
+    void OnPrimaryAtttackLanded();
 }
 public interface IMovement
 {
