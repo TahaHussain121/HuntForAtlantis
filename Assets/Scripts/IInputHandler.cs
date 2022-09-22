@@ -7,6 +7,7 @@ public interface IInputHandler
     void MoveHorizontally(float horizontal);
     void PrimaryAttack();
     void SpecialAttack();
+    void Interact();
 }
 public interface IAttackable
 {
@@ -30,3 +31,8 @@ public interface IMovement
     void Jump();
     void MoveHorizontally(float hor);
 }
+public interface IInteraction
+{
+    void Interact();
+}
+

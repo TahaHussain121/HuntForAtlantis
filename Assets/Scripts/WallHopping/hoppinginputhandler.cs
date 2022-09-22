@@ -33,4 +33,9 @@ public class hoppinginputhandler : MonoBehaviour, IInputHandler
     {
         throw new System.NotImplementedException();
     }
+
+    public void Interact()
+    {
+        throw new System.NotImplementedException();
+    }
 }

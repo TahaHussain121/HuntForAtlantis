@@ -32,7 +32,6 @@ public class SatyrInputHandler : MonoBehaviour, IInputHandler,ICharacterManager
     public void PrimaryAttack()
     {
         satyrFighter.PrimaryAttack();
-        //rageController.IncreaseRage(rageController.primaryAttackPoints);
     }
 
     public void SpecialAttack()
@@ -53,5 +52,10 @@ public class SatyrInputHandler : MonoBehaviour, IInputHandler,ICharacterManager
     public RageController GetRageController()
     {
         return rageController;
+    }
+
+    public void Interact()
+    {
+        Debug.LogError("Interact ability for satyr has not been implemented yet.");
     }
 }

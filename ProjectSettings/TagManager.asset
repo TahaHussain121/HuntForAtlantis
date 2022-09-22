@@ -8,6 +8,7 @@ TagManager:
   - Satyr
   - Minotaur
   - Wall
+  - PickableBlock
   layers:
   - Default
   - TransparentFX

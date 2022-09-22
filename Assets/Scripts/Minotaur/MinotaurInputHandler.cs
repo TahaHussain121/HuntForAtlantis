@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MinotaurInputHandler : MonoBehaviour, IInputHandler, ICharacterManager
 {
-
+    IInteraction minotaurInteraction;
     IFighter minotaurFighter;
     IMovement minotaurMovement;
     RageController rageController;
@@ -13,6 +13,8 @@ public class MinotaurInputHandler : MonoBehaviour, IInputHandler, ICharacterMana
     {
         minotaurFighter = GetComponent<IFighter>();
         minotaurMovement = GetComponent<IMovement>();
+        minotaurInteraction = GetComponent<IInteraction>();
+
         rageController = GetComponent<RageController>();
     }
     public Transform GetTransform()
@@ -33,12 +35,15 @@ public class MinotaurInputHandler : MonoBehaviour, IInputHandler, ICharacterMana
     public void PrimaryAttack()
     {
         minotaurFighter.PrimaryAttack();
-        //rageController.IncreaseRage(rageController.primaryAttackPoints);
     }
 
     public void SpecialAttack()
     {
         minotaurFighter.RageAttack();
+    }
+    public void Interact()
+    {
+        minotaurInteraction.Interact();
     }
 
     public IFighter GetCharacterFighter()
@@ -55,4 +60,5 @@ public class MinotaurInputHandler : MonoBehaviour, IInputHandler, ICharacterMana
     {
         return rageController;
     }
+
 }
