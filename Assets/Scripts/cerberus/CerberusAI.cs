@@ -5,6 +5,7 @@ using UnityEngine;
 public class CerberusAI : MonoBehaviour, ICharacterManager
 {
     CerberusAttacker attavker;
+   
     public void Awake()
     {
         attavker = GetComponent<CerberusAttacker>();
@@ -16,16 +17,18 @@ public class CerberusAI : MonoBehaviour, ICharacterManager
     }
     public IFighter GetCharacterFighter()
     {
-        throw new System.NotImplementedException();
+        return gameObject.GetComponent<CerberusAttacker>();
     }
 
     public IMovement GetCharacterMovement()
     {
-        throw new System.NotImplementedException();
+        return gameObject.GetComponent<CerberusMovement>();
+
     }
 
     public RageController GetRageController()
     {
-        throw new System.NotImplementedException();
+        return gameObject.GetComponent<RageController>();
+
     }
 }

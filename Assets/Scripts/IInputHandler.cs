@@ -1,5 +1,7 @@
 using UnityEngine;
 
+public enum CharacterType { Satyr, Minotaur, Enemy }
+public enum AttackType { Melee, Ranged }
 public interface IInputHandler
 {
     Transform GetTransform();
@@ -10,7 +12,7 @@ public interface IInputHandler
 }
 public interface IAttackable
 {
-    void OnAttacked(AttackType atype);
+    void OnAttacked(CharacterType ctype,AttackType atype);
 }
 public interface ICharacterManager
 {

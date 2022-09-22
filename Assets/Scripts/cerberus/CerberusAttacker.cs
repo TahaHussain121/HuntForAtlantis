@@ -9,8 +9,6 @@ public class CerberusAttacker : MonoBehaviour, IFighter, IAttackable
     public Transform TestObject;
     ///
     [SerializeField] List<CerberusHead> headList;
-    [SerializeField] int maxHealth = 150;
-    [SerializeField] int currentHealth = 150;
     [SerializeField] private bool isRageBarFull = false;
 
     private Animator anim;
@@ -19,9 +17,17 @@ public class CerberusAttacker : MonoBehaviour, IFighter, IAttackable
     private bool isAttacking = false;
     private bool isInvincible;
 
+    public void OnEnable()
+    {
+        CerberusHead.TakeAttack+= OnAttacked ;
+    }
+    public void OnDisable()
+    {
+        
+    }
     void Start()
     {
-
+      
         anim = GetComponent<Animator>();
         characterManager = GetComponent<ICharacterManager>();
     }
@@ -83,45 +89,53 @@ public class CerberusAttacker : MonoBehaviour, IFighter, IAttackable
 
     }
 
-    public void HealHealthByPercentage(float percentage)
-    {
-        currentHealth = Mathf.Clamp(currentHealth += Mathf.RoundToInt(currentHealth * (percentage / 100)), 0, maxHealth);
-    }
 
     private void OnRageBarEmptied()
     {
         isRageBarFull = false;
         characterManager.GetRageController().ResetRage();
     }
-    public void OnAttacked(AttackType atype)
+    public void OnAttacked(CharacterType ctype,AttackType atype)
     {
         if (isInvincible) return;
 
         RageController rageController = characterManager.GetRageController();
 
-        switch (atype)
+        if (ctype == CharacterType.Minotaur)
         {
-            case AttackType.Melee:
-                rageController.IncreaseRage(rageController.attackedWithMeleePoints);
-                break;
+            switch (atype)
+            {
+                case AttackType.Melee:
+                    rageController.IncreaseRage(rageController.attackedWithMeleePoints);
+                    break;
 
-            case AttackType.Ranged:
-                rageController.IncreaseRage(rageController.attackedWithRangePoints);
-                break;
+                case AttackType.Ranged:
+                    rageController.IncreaseRage(rageController.attackedWithRangePoints);
+                    break;
+            }
+
+        }
+        else if (ctype == CharacterType.Satyr)
+        {
+            switch (atype)
+            {
+                case AttackType.Melee:
+                    rageController.IncreaseRage(rageController.attackedWithMeleePoints);
+                    break;
+
+                case AttackType.Ranged:
+                    rageController.IncreaseRage(rageController.attackedWithRangePoints);
+                    break;
+            }
         }
     }
 
     public void OnRageBarFilled()
     {
-
+        isInvincible = true;
     }
 
-    private void SetupHeads() { 
     
-    
-    
-    
-    }
     private  List<CerberusHead> ShuffleList(List<CerberusHead> givenList)
     {
 

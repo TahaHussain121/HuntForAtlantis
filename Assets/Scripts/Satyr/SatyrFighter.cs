@@ -132,7 +132,7 @@ public class SatyrFighter : MonoBehaviour, IFighter, IAttackable
         isRageBarFull = false;
         characterManager.GetRageController().ResetRage();
     }
-    public void OnAttacked( AttackType atype) // NOTE: what is the use for cType?
+    public void OnAttacked(CharacterType ctype, AttackType atype) // NOTE: what is the use for cType?
     {
         if (isInvincible) return;
 
