@@ -8,16 +8,17 @@ TagManager:
   - Satyr
   - Minotaur
   - Wall
+  - PickableBlock
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Satyr
   - Water
   - UI
   - Enemy
   - Projectile
-  - 
+  - HoppableWall
   - 
   - 
   - 

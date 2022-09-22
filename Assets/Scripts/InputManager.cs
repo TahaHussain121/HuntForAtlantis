@@ -31,6 +31,10 @@ public class InputManager : MonoBehaviour
         {
             Gamemanager.ActiveIInputHandler.SpecialAttack();
         }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Gamemanager.ActiveIInputHandler.Interact();
+        }
 
     }
 }

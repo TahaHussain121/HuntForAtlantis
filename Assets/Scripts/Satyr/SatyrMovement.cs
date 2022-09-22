@@ -7,16 +7,20 @@ public class SatyrMovement : MonoBehaviour, IMovement
     [SerializeField] float lateralMovementSpeed;
     [SerializeField] float rotationSpeed;
     [SerializeField] float jumpForce;
-    [SerializeField] float gravity;
+    [SerializeField] float gravityInAir;
+    [SerializeField] float gravityOnWall;
     float val = 0;
 
     private SatyrFighter fighter;
     private Animator anim;
     private CharacterController characterController;
-
+    private ICharacterManager characterManager;
+    private bool isInContactWithHoppableWall;
+    private bool canWallHop;
 
     private void Awake()
     {
+        characterManager = GetComponent<ICharacterManager>();
         fighter = GetComponent<SatyrFighter>();
         characterController = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
@@ -26,7 +30,10 @@ public class SatyrMovement : MonoBehaviour, IMovement
     {
         if (fighter.isAttacking) return;
 
+        float gravity = isInContactWithHoppableWall ? gravityOnWall : gravityInAir;
+
         val -= gravity * Time.deltaTime;
+
         characterController.Move(new Vector3(lateralMovementSpeed * horiAxis, val*3, 0) * Time.deltaTime);
       
         
@@ -37,12 +44,13 @@ public class SatyrMovement : MonoBehaviour, IMovement
     public void Jump()
     {
         if (fighter.isAttacking) return;
-        if (characterController.isGrounded)
+        if (characterController.isGrounded || (isInContactWithHoppableWall && canWallHop))
         {
             print("jump() called");
 
             anim.SetTrigger("Jump");
             val = jumpForce;
+            canWallHop = false;
 
         }
 
@@ -92,5 +100,25 @@ public class SatyrMovement : MonoBehaviour, IMovement
             anim.SetBool("Running", false);
         }
     }
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.transform.tag == "Wall")
+        {
+            print("canWallHop = true");
+            canWallHop = true;
+            isInContactWithHoppableWall = true;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.transform.tag == "Wall")
+        {
+            print("canWallHop = false");
+            //canWallHop = false;
+            isInContactWithHoppableWall = false;
+        }
+    }
+
 
 }

@@ -14,18 +14,20 @@ public class MinotaurMovement : MonoBehaviour, IMovement
     private MinotaurFighter fighter;
     private Animator anim;
     private CharacterController characterController;
+    private ICharacterManager characterManager;
+
+    //private bool isFighterInRage;
+
 
     private void Awake()
     {
         fighter = GetComponent<MinotaurFighter>();
         characterController = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
+        characterManager = GetComponent<ICharacterManager>();
 
     }
-    private void Update()
-    {
-        HandleAnimation();
-    }
+
     public void MoveHorizontally(float horiAxis)
     {
         if (fighter.isAttacking) return;
@@ -46,9 +48,7 @@ public class MinotaurMovement : MonoBehaviour, IMovement
 
             anim.SetTrigger("Jump");
             val = jumpForce;
-
         }
-
     }
     private void HandleRotation(float axis)
     {
