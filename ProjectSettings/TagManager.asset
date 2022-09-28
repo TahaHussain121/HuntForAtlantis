@@ -9,6 +9,8 @@ TagManager:
   - Minotaur
   - Wall
   - PickableBlock
+  - target
+  - Arrow
   layers:
   - Default
   - TransparentFX

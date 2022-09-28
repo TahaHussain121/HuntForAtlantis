@@ -9,8 +9,16 @@ public class HealthPool : MonoBehaviour
     [SerializeField] int healthPerhead;
     public delegate void Health(int val);
     public static Health SetupHealth;
-    private ICharacterManager characterManager;
 
+    private ICharacterManager characterManager;
+    public void OnEnable()
+    {
+        CerberusAttacker.TakeDamage += TakeDamage;
+    }
+    public void OnDisable3()
+    {
+        CerberusAttacker.TakeDamage -= TakeDamage;
+    }
     private void Awake()
     {
         characterManager = GetComponent<ICharacterManager>();

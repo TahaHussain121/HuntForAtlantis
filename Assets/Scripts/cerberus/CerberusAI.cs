@@ -4,17 +4,34 @@ using UnityEngine;
 
 public class CerberusAI : MonoBehaviour, ICharacterManager
 {
-    CerberusAttacker attavker;
-   
+    CerberusAttacker attacker;
+  
     public void Awake()
     {
-        attavker = GetComponent<CerberusAttacker>();
+        attacker = GetComponent<CerberusAttacker>();
     }
     [ContextMenu("TestFireball")]
     void TestFireball()
     {
-        attavker.PrimaryAttack();
+        attacker.PrimaryAttack();
+    } 
+    [ContextMenu("TestLunge")]
+    void TestLunge()
+    {
+        attacker.MeleeAttack();
     }
+
+    public void Update()
+    {
+      //  if (attacker.CheckEnemyInRange())
+       // {
+
+            attacker.PrimaryAttack();
+            
+      //  }
+    }
+
+   
     public IFighter GetCharacterFighter()
     {
         return gameObject.GetComponent<CerberusAttacker>();
@@ -30,5 +47,17 @@ public class CerberusAI : MonoBehaviour, ICharacterManager
     {
         return gameObject.GetComponent<RageController>();
 
+    }
+
+    public void OnRageBarFilled() {
+        Debug.Log("rageFull");
+        attacker.OnRageBarFilled();
+    
+    }
+
+
+    public void OnRageEmpty() {
+
+        attacker.OnRageBarEmptied();
     }
 }

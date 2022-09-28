@@ -16,7 +16,7 @@ public class RageController : MonoBehaviour
     [SerializeField]
     int MaxRagevalue = 100;
 
-    private ICharacterManager characterManager;
+    [SerializeField] private ICharacterManager characterManager;
 
     private void Awake()
     {

@@ -15,7 +15,8 @@ public class MinotaurFighter : MonoBehaviour, IFighter, IAttackable
     public bool isAttacking = false;
     public Vector3 directionFacing;
     private bool isInvincibleInRage;
-
+    [SerializeField] private AttackType attackType;
+    [SerializeField] private CharacterType characterType = CharacterType.Minotaur;
     //public bool IsInvincibleInRage { get => isInvincibleInRage; }
 
     private void Awake()
@@ -33,6 +34,8 @@ public class MinotaurFighter : MonoBehaviour, IFighter, IAttackable
     {
         if (isRageBarFull)
         {
+            attackType = AttackType.Rage;
+
             StartDashAttackAnim();
         }
     }
@@ -41,7 +44,7 @@ public class MinotaurFighter : MonoBehaviour, IFighter, IAttackable
         if (!isAttacking)
         {
             isAttacking = true;
-
+            attackType = AttackType.Melee;
             anim.SetTrigger("MeleeAttack");
             //print("Melee Attack");
         }
@@ -92,6 +95,26 @@ public class MinotaurFighter : MonoBehaviour, IFighter, IAttackable
         isRageBarFull = false;
         characterManager.GetRageController().ResetRage();
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        IAttackable Attacker = collision.gameObject.GetComponent<IAttackable>();
+        if (Attacker != null)
+        {
+            Debug.Log("Something Hit");
+            OnAttacked(Attacker.GetCharacterType(), Attacker.GetAttackType());
+        }
+        else if (collision.gameObject.tag == "Enemy")
+        {
+            Debug.Log("Arrow");
+
+            OnAttacked(CharacterType.Cerberus, AttackType.Ranged);
+
+
+        }
+    }
+
+
     public void OnAttacked(CharacterType ctype, AttackType atype) // NOTE: what is the use for cType?
     {
         if (isInvincibleInRage) return;
@@ -114,4 +137,13 @@ public class MinotaurFighter : MonoBehaviour, IFighter, IAttackable
         characterManager.GetRageController().IncreaseRage(characterManager.GetRageController().primaryAttackPoints);
     }
 
+    public AttackType GetAttackType()
+    {
+        return attackType;
+    }
+
+    public CharacterType GetCharacterType()
+    {
+        return characterType;
+    }
 }
