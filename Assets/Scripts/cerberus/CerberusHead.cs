@@ -36,7 +36,7 @@ public class CerberusHead: MonoBehaviour
         CerberusAttacker.TakeDamage += UpdateHealth;
         HealthPool.SetupHealth += setupHealth;
     }  
-    public void OnDisable3()
+    public void OnDisable()
     {
         CerberusAttacker.TakeDamage -= UpdateHealth;
         HealthPool.SetupHealth -= setupHealth;

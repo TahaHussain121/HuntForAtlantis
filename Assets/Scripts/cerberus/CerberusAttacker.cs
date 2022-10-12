@@ -12,23 +12,23 @@ public class CerberusAttacker : MonoBehaviour, IFighter, IAttackable
     [SerializeField] private bool isRageBarFull = false;
     [SerializeField] private CerberusHead meleeHead;
     [SerializeField] private AttackType attackType;
-    [SerializeField] private CharacterType characterType=CharacterType.Cerberus;
+    [SerializeField] private CharacterType characterType = CharacterType.Cerberus;
 
     private Animator anim;
     private ICharacterManager characterManager;
 
     private bool isAttacking = false;
     private bool isInvincible;
-    private bool isMele=false;
+    private bool isMele = false;
 
     public delegate void Damage(int val);
     public static Damage TakeDamage;
     public void OnEnable()
     {
-       
-        CerberusHead.TakeAttack+= OnAttacked ;
+
+        CerberusHead.TakeAttack += OnAttacked;
     }
- 
+
     void Start()
     {
         Target = Gamemanager.ActiveIInputHandler.GetTransform();
@@ -37,47 +37,58 @@ public class CerberusAttacker : MonoBehaviour, IFighter, IAttackable
     }
 
 
-    public bool CheckEnemyInRange() {
+    public bool CheckEnemyInRange()
+    {
 
-      
+        bool val = false;
 
-        if (headList[0].CheckRange() || headList[1].CheckRange() || headList[2].CheckRange())
+        for (int i = 0; i < headList.Count; i++)
         {
-            Debug.Log("True");
-            return true;
+            if (headList[i].CheckRange())
+            {
+                val = true;
+            }
         }
-        Debug.Log("False");
 
-        return false;
+        return val;
+
+        //if (headList[0].CheckRange() || headList[1].CheckRange() || headList[2].CheckRange())
+        //{
+        //    Debug.Log("True");
+        //    return true;
+        //}
+        //Debug.Log("False");
+
+        //return false;
     }
     public void PrimaryAttack()
     {
-        if (!isRageBarFull&&!isMele)
-           {
-         StartRangeAttack();
-         }
+        if (!isRageBarFull && !isMele)
+        {
+            StartRangeAttack();
+        }
     }
-    
+
     public void MeleeAttack()
     {
         if (!isRageBarFull)
-           {
+        {
             StartMeleeAttack();
-         }
+        }
     }
 
-  
+
     public void SpecialAttack()
     {
 
     }
 
-  
+
     private void StartMeleeAttack()
     {
         StopAllCoroutines();
 
-        if (!isAttacking&&isMele)
+        if (!isAttacking && isMele)
         {
             isAttacking = true;
             attackType = AttackType.Melee;
@@ -85,8 +96,8 @@ public class CerberusAttacker : MonoBehaviour, IFighter, IAttackable
             StartCoroutine(LungeAttack(meleeHead)); ;
         }
     }
-    
-   
+
+
     private void StartRangeAttack()
     {
         //StopAllCoroutines();
@@ -96,11 +107,11 @@ public class CerberusAttacker : MonoBehaviour, IFighter, IAttackable
             attackType = AttackType.Ranged;
             StartCoroutine("RangeAttack");
 
-           
+
 
         }
     }
-    
+
     private IEnumerator LungeAttack(CerberusHead head)
     {
         yield return new WaitForSeconds(2);
@@ -123,12 +134,17 @@ public class CerberusAttacker : MonoBehaviour, IFighter, IAttackable
         Target = Gamemanager.ActiveIInputHandler.GetTransform();
         List<CerberusHead> cb = new List<CerberusHead>();
         cb = ShuffleList(headList);
-        FireBallAttack( Target, cb[0]);
-        yield return new WaitForSeconds(0.5f);
-        FireBallAttack( Target, cb[1]);
-        yield return new WaitForSeconds(0.5f);
-        FireBallAttack( Target, cb[2]);
-        yield return new WaitForSeconds(0.5f);
+        //FireBallAttack( Target, cb[0]);
+        //yield return new WaitForSeconds(0.5f);
+        //FireBallAttack( Target, cb[1]);
+        //yield return new WaitForSeconds(0.5f);
+        //FireBallAttack( Target, cb[2]);
+        //yield return new WaitForSeconds(0.5f);
+        for (int i = 0; i < cb.Count; i++)
+        {
+            FireBallAttack(Target, cb[i]);
+            yield return new WaitForSeconds(0.5f);
+        }
 
         isAttacking = false;
 
@@ -144,30 +160,48 @@ public class CerberusAttacker : MonoBehaviour, IFighter, IAttackable
     public IEnumerator Rage()
     {
         List<CerberusHead> cb = new List<CerberusHead>();
-        cb = ShuffleList(headList);
-        cb = ShuffleList(headList);
-
-        cb[0].Shake();
-        cb[1].Shake();
+        for (int i = 0; i < 2; i++)
+        {
+            cb = ShuffleList(headList);
+        }
+        for (int i = 0; i < cb.Count - 1; i++)
+        {
+            cb[i].Shake();
+        }
+        //cb[0].Shake();
+        //cb[1].Shake();
         cb[2].PullBack();
         yield return new WaitForSeconds(1f);
-        cb[0].ResetPos();
-        cb[1].ResetPos();
+        for (int i = 0; i < cb.Count - 1; i++)
+        {
+            cb[i].ResetPos();
+        }
+        // cb[0].ResetPos();
+        // cb[1].ResetPos();
         yield return new WaitForSeconds(0.5f);
-        cb[0].ThrowLaserbeam();
-        cb[1].ThrowLaserbeam();
+        for (int i = 0; i < cb.Count - 1; i++)
+        {
+            cb[i].ThrowLaserbeam();
+        }
+        //cb[0].ThrowLaserbeam();
+        //cb[1].ThrowLaserbeam();
         yield return new WaitForSeconds(3f);
-        cb[0].ResetPos();
-        cb[1].ResetPos();
-        cb[2].ResetPos();
+
+        for (int i = 0; i < cb.Count; i++)
+        {
+            cb[i].ResetPos();
+        }
+        // cb[0].ResetPos();
+        //cb[1].ResetPos();
+        //cb[2].ResetPos();
         isAttacking = false;
         OnRageBarEmptied();
 
     }
-    private void FireBallAttack( Transform target, CerberusHead head)
+    private void FireBallAttack(Transform target, CerberusHead head)
     {
 
-        head.ThrowFireball( target);
+        head.ThrowFireball(target);
 
     }
 
@@ -177,7 +211,7 @@ public class CerberusAttacker : MonoBehaviour, IFighter, IAttackable
         isRageBarFull = false;
         characterManager.GetRageController().ResetRage();
     }
-    public void OnAttacked(CharacterType ctype,AttackType atype)
+    public void OnAttacked(CharacterType ctype, AttackType atype)
     {
         if (isInvincible) return;
 
@@ -211,8 +245,8 @@ public class CerberusAttacker : MonoBehaviour, IFighter, IAttackable
             }
         }
     }
-    
-     public void OnAttacked(CharacterType ctype,AttackType atype,CerberusHead head)
+
+    public void OnAttacked(CharacterType ctype, AttackType atype, CerberusHead head)
     {
         if (isInvincible) return;
 
@@ -258,16 +292,16 @@ public class CerberusAttacker : MonoBehaviour, IFighter, IAttackable
         isInvincible = true;
         Debug.Log("rage");
         RageAttack();
-    } 
-    
+    }
+
     private void OnDeath(CerberusHead head)
     {
         //Not implemente4d (first correct the hardcode attacks)
         headList.Remove(head);
     }
 
-    
-    private  List<CerberusHead> ShuffleList(List<CerberusHead> givenList)
+
+    private List<CerberusHead> ShuffleList(List<CerberusHead> givenList)
     {
 
         for (int i = 0; i < givenList.Count; i++)
@@ -284,7 +318,7 @@ public class CerberusAttacker : MonoBehaviour, IFighter, IAttackable
 
     }
 
-   
+
 
     public void OnPrimaryAtttackLanded()
     {
