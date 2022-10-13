@@ -25,10 +25,9 @@ public class CerberusAttacker : MonoBehaviour, IFighter, IAttackable
     public static Damage TakeDamage;
     public void OnEnable()
     {
-
+        CerberusHead.OnDeath += OnDeath;
         CerberusHead.TakeAttack += OnAttacked;
     }
-
     void Start()
     {
         Target = Gamemanager.ActiveIInputHandler.GetTransform();
@@ -36,7 +35,10 @@ public class CerberusAttacker : MonoBehaviour, IFighter, IAttackable
         characterManager = GetComponent<ICharacterManager>();
     }
 
-
+    /// <summary>
+    /// Range Check
+    /// </summary>
+    /// <returns></returns>
     public bool CheckEnemyInRange()
     {
 
@@ -51,16 +53,8 @@ public class CerberusAttacker : MonoBehaviour, IFighter, IAttackable
         }
 
         return val;
-
-        //if (headList[0].CheckRange() || headList[1].CheckRange() || headList[2].CheckRange())
-        //{
-        //    Debug.Log("True");
-        //    return true;
-        //}
-        //Debug.Log("False");
-
-        //return false;
     }
+
     public void PrimaryAttack()
     {
         if (!isRageBarFull && !isMele)
@@ -77,12 +71,10 @@ public class CerberusAttacker : MonoBehaviour, IFighter, IAttackable
         }
     }
 
-
     public void SpecialAttack()
     {
 
     }
-
 
     private void StartMeleeAttack()
     {
@@ -93,10 +85,9 @@ public class CerberusAttacker : MonoBehaviour, IFighter, IAttackable
             isAttacking = true;
             attackType = AttackType.Melee;
 
-            StartCoroutine(LungeAttack(meleeHead)); ;
+            // StartCoroutine(LungeAttack(meleeHead)); under discussion
         }
     }
-
 
     private void StartRangeAttack()
     {
@@ -107,11 +98,14 @@ public class CerberusAttacker : MonoBehaviour, IFighter, IAttackable
             attackType = AttackType.Ranged;
             StartCoroutine("RangeAttack");
 
-
-
         }
     }
 
+    /// <summary>
+    /// Lunge attack(still have a lot of issues)
+    /// </summary>
+    /// <param name="head"></param>
+    /// <returns></returns>
     private IEnumerator LungeAttack(CerberusHead head)
     {
         yield return new WaitForSeconds(2);
@@ -126,20 +120,18 @@ public class CerberusAttacker : MonoBehaviour, IFighter, IAttackable
         isMele = false;
 
         isAttacking = false;
-
-
     }
+
+    /// <summary>
+    /// Range attack (Fireball attack)
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator RangeAttack()
     {
         Target = Gamemanager.ActiveIInputHandler.GetTransform();
         List<CerberusHead> cb = new List<CerberusHead>();
         cb = ShuffleList(headList);
-        //FireBallAttack( Target, cb[0]);
-        //yield return new WaitForSeconds(0.5f);
-        //FireBallAttack( Target, cb[1]);
-        //yield return new WaitForSeconds(0.5f);
-        //FireBallAttack( Target, cb[2]);
-        //yield return new WaitForSeconds(0.5f);
+
         for (int i = 0; i < cb.Count; i++)
         {
             FireBallAttack(Target, cb[i]);
@@ -164,36 +156,30 @@ public class CerberusAttacker : MonoBehaviour, IFighter, IAttackable
         {
             cb = ShuffleList(headList);
         }
-        for (int i = 0; i < cb.Count - 1; i++)
+        if (cb != null)
         {
-            cb[i].Shake();
-        }
-        //cb[0].Shake();
-        //cb[1].Shake();
-        cb[2].PullBack();
-        yield return new WaitForSeconds(1f);
-        for (int i = 0; i < cb.Count - 1; i++)
-        {
-            cb[i].ResetPos();
-        }
-        // cb[0].ResetPos();
-        // cb[1].ResetPos();
-        yield return new WaitForSeconds(0.5f);
-        for (int i = 0; i < cb.Count - 1; i++)
-        {
-            cb[i].ThrowLaserbeam();
-        }
-        //cb[0].ThrowLaserbeam();
-        //cb[1].ThrowLaserbeam();
-        yield return new WaitForSeconds(3f);
+            for (int i = 0; i < cb.Count - 1; i++)
+            {
+                cb[i].Shake();
+            }
 
-        for (int i = 0; i < cb.Count; i++)
-        {
-            cb[i].ResetPos();
+            cb[cb.Count - 1].PullBack();
+            yield return new WaitForSeconds(1f);
+            for (int i = 0; i < cb.Count - 1; i++)
+            {
+                cb[i].ResetPos();
+            }
+            yield return new WaitForSeconds(0.5f);
+            for (int i = 0; i < cb.Count - 1; i++)
+            {
+                cb[i].ThrowLaserbeam();
+            }
+            yield return new WaitForSeconds(3f);
+            for (int i = 0; i < cb.Count; i++)
+            {
+                cb[i].ResetPos();
+            }
         }
-        // cb[0].ResetPos();
-        //cb[1].ResetPos();
-        //cb[2].ResetPos();
         isAttacking = false;
         OnRageBarEmptied();
 
@@ -205,47 +191,59 @@ public class CerberusAttacker : MonoBehaviour, IFighter, IAttackable
 
     }
 
-
     public void OnRageBarEmptied()
     {
         isRageBarFull = false;
         characterManager.GetRageController().ResetRage();
     }
+
+    /// <summary>
+    /// Run when character get hit not using this for cerberus made new one
+    /// </summary>
+    /// <param name="ctype"></param>
+    /// <param name="atype"></param>
+    /// <param name="head"></param>
     public void OnAttacked(CharacterType ctype, AttackType atype)
     {
-        if (isInvincible) return;
+        //if (isInvincible) return;
 
-        RageController rageController = characterManager.GetRageController();
+        //RageController rageController = characterManager.GetRageController();
 
-        if (ctype == CharacterType.Minotaur)
-        {
-            switch (atype)
-            {
-                case AttackType.Melee:
-                    rageController.IncreaseRage(rageController.attackedWithMeleePoints);
-                    break;
+        //if (ctype == CharacterType.Minotaur)
+        //{
+        //    switch (atype)
+        //    {
+        //        case AttackType.Melee:
+        //            rageController.IncreaseRage(rageController.attackedWithMeleePoints);
+        //            break;
 
-                case AttackType.Ranged:
-                    rageController.IncreaseRage(rageController.attackedWithRangePoints);
-                    break;
-            }
+        //        case AttackType.Ranged:
+        //            rageController.IncreaseRage(rageController.attackedWithRangePoints);
+        //            break;
+        //    }
 
-        }
-        else if (ctype == CharacterType.Satyr)
-        {
-            switch (atype)
-            {
-                case AttackType.Melee:
-                    rageController.IncreaseRage(rageController.attackedWithMeleePoints);
-                    break;
+        //}
+        //else if (ctype == CharacterType.Satyr)
+        //{
+        //    switch (atype)
+        //    {
+        //        case AttackType.Melee:
+        //            rageController.IncreaseRage(rageController.attackedWithMeleePoints);
+        //            break;
 
-                case AttackType.Ranged:
-                    rageController.IncreaseRage(rageController.attackedWithRangePoints);
-                    break;
-            }
-        }
+        //        case AttackType.Ranged:
+        //            rageController.IncreaseRage(rageController.attackedWithRangePoints);
+        //            break;
+        //    }
+        //}
     }
 
+    /// <summary>
+    /// Run when cerberus get hit
+    /// </summary>
+    /// <param name="ctype"></param>
+    /// <param name="atype"></param>
+    /// <param name="head"></param>
     public void OnAttacked(CharacterType ctype, AttackType atype, CerberusHead head)
     {
         if (isInvincible) return;
@@ -298,9 +296,18 @@ public class CerberusAttacker : MonoBehaviour, IFighter, IAttackable
     {
         //Not implemente4d (first correct the hardcode attacks)
         headList.Remove(head);
+        if (headList.Count == 0)
+        {
+            Debug.Log("dead doggie");
+            this.gameObject.SetActive(false);
+        }
     }
 
-
+    /// <summary>
+    /// Shuffle Elements of given list
+    /// </summary>
+    /// <param name="givenList"></param>
+    /// <returns></returns>
     private List<CerberusHead> ShuffleList(List<CerberusHead> givenList)
     {
 
@@ -314,21 +321,26 @@ public class CerberusAttacker : MonoBehaviour, IFighter, IAttackable
 
         return givenList;
 
-
-
     }
-
-
 
     public void OnPrimaryAtttackLanded()
     {
         throw new System.NotImplementedException();
     }
 
+    /// <summary>
+    /// Return attack Type
+    /// </summary>
+    /// <returns></returns>
     public AttackType GetAttackType()
     {
         return attackType;
     }
+
+    /// <summary>
+    /// return character type
+    /// </summary>
+    /// <returns></returns>
     public CharacterType GetCharacterType()
     {
         return characterType;

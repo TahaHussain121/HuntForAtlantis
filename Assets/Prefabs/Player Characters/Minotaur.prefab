@@ -485,7 +485,7 @@ GameObject:
   - component: {fileID: 1650561200597704701}
   m_Layer: 0
   m_Name: Minotaur
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -593,9 +593,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 150
   currentHealth: 150
+  dashSpeed: 0
   isRageBarFull: 0
   isAttacking: 0
   directionFacing: {x: 0, y: 0, z: 0}
+  attackType: 0
+  characterType: 1
 --- !u!114 &1650561200597704700
 MonoBehaviour:
   m_ObjectHideFlags: 0

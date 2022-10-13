@@ -115,13 +115,15 @@ public class CerberusHead: MonoBehaviour
     }
     private void UpdateHealth(int val)
     {
-        if (currentHealth >= val)
+        if (currentHealth > val)
         {
             currentHealth -= val;
            
         }
         else
         {
+            onDeath(this);
+
             //death
         }
       
@@ -129,8 +131,9 @@ public class CerberusHead: MonoBehaviour
 
     private void onDeath(CerberusHead head)
     {
-        this.gameObject.SetActive(false);
         OnDeath(head);
+        this.gameObject.SetActive(false);
+
     }
     private void OnCollisionEnter(Collision collision)
     {

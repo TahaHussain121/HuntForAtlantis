@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum CharacterType { Satyr, Minotaur, Cerberus }
+public enum CharacterType { Satyr, Minotaur, Cerberus,Enemy }
 public enum AttackType { Melee, Ranged,Rage }
 public interface IInputHandler
 {

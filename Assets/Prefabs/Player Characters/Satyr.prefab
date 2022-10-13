@@ -1857,7 +1857,7 @@ GameObject:
   - component: {fileID: 4581690446646786098}
   m_Layer: 0
   m_Name: Satyr
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1918,6 +1918,8 @@ MonoBehaviour:
   currentAmmo: 15
   maxHealth: 100
   currentHealth: 100
+  attackType: 0
+  characterType: 0
   isRageBarFull: 1
   isAttacking: 0
   directionFacing: {x: 0, y: 0, z: 0}
@@ -1936,7 +1938,8 @@ MonoBehaviour:
   lateralMovementSpeed: 30
   rotationSpeed: 50
   jumpForce: 12
-  gravity: 25
+  gravityInAir: 0
+  gravityOnWall: 0
 --- !u!114 &4581690446563806587
 MonoBehaviour:
   m_ObjectHideFlags: 0
