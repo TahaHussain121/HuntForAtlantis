@@ -9,6 +9,12 @@ public class Gamemanager : Singleton<Gamemanager>
     private CinemachineVirtualCamera mainVCam;
     [SerializeField]
     private Transform character1;
+
+    internal static void GameOver()
+    {
+        //throw new NotImplementedException();
+    }
+
     [SerializeField]
     private Transform character2;
 

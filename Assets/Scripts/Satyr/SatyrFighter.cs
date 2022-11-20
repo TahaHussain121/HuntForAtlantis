@@ -71,7 +71,7 @@ public class SatyrFighter : MonoBehaviour, IFighter, IAttackable
     }
     public void OnArrowShootingAnimEnd() // called from animation event
     {
-        //print("OnRangeAttackAnimEnd() called");
+        print("OnArrowShootingAnimEnd() called");
         Invoke("RotateBack", 0.5f);
         ShootProjectile();
         isAttacking = false;
