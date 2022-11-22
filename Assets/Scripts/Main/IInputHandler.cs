@@ -1,6 +1,7 @@
 using UnityEngine;
 
 public enum CharacterType { Satyr, Minotaur, Cerberus,Enemy }
+public enum GameState { Startup, InGame, Pause,Dialogue,End }
 public enum AttackType { Melee, Ranged,Rage }
 public interface IInputHandler
 {
@@ -32,10 +33,12 @@ public interface IFighter
     void OnRageBarFilled();
     void OnPrimaryAtttackLanded();
 }
+
 public interface IMovement
 {
     void Jump();
     void MoveHorizontally(float hor);
+    
 }
 public interface IInteraction
 {

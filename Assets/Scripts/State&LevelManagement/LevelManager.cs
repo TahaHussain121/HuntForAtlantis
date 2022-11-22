@@ -8,17 +8,16 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class LevelManager : MonoBehaviour
 {
+
     /// <summary>
     /// add name of scenes here
     /// </summary>
     public enum Levels { MainMenu, GamePlay }
 
-
-
     /// <summary>
     /// Assign Name of next scene to be loaded
     /// </summary>
-   [SerializeField] Levels nextLevel;
+    [SerializeField] Levels nextLevel;
 
 
 /// <summary>
