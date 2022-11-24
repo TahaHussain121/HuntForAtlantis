@@ -9,6 +9,21 @@ public class EnemyAttacker : MonoBehaviour, IFighter, IAttackable
     [SerializeField] int maxHealth = 150;
     [SerializeField] int currentHealth = 150;
     [SerializeField] private bool isRageBarFull = false;
+
+
+    public bool CheckRange(Transform target)
+    {
+        Debug.Log("check range");
+
+        if (Vector3.Distance(transform.position, target.position) < 10)
+        {
+
+    
+                return true;
+
+        }
+        return false;
+    }
     public void OnPrimaryAtttackLanded()
     {
         //throw new System.NotImplementedException();
@@ -19,9 +34,14 @@ public class EnemyAttacker : MonoBehaviour, IFighter, IAttackable
        // throw new System.NotImplementedException();
     }
 
-    public void PrimaryAttack()
-    {
-        //throw new System.NotImplementedException();
+    public void PrimaryAttack(Transform target)
+    {// change it to corutine please
+        if (CheckRange(target))
+        {
+            Debug.Log("attack");
+            //attack animaiton
+        }
+        
     }
 
     public void RageAttack()
@@ -55,6 +75,8 @@ public class EnemyAttacker : MonoBehaviour, IFighter, IAttackable
         }
     }
 
-    
-   
+    public void PrimaryAttack()
+    {
+       // throw new System.NotImplementedException();
+    }
 }

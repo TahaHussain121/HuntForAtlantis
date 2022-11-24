@@ -10,22 +10,22 @@ public class EnemyAI : MonoBehaviour, ICharacterManager
 
     [SerializeField] Transform target;
     [SerializeField] EnemyState eState;
-    [SerializeField] IFighter Attacker;
-    [SerializeField] IMovement Movement;
+    [SerializeField] EnemyAttacker Attacker;
+    [SerializeField] EnemyMovement Movement;
 
     public void Start()
     {
         target = Gamemanager.ActiveIInputHandler.GetTransform();
         // Movement.MoveHorizontally(0.5f);
-        Attacker = GetCharacterFighter();
-        Movement = GetCharacterMovement();
-        Movement.MoveHorizontally(0.5f);
+        Attacker = gameObject.GetComponent<EnemyAttacker>();
+        Movement = gameObject.GetComponent<EnemyMovement>();
+        Movement.Patrol(1f);
 
     }
 
     public void Update()
     {
-        //Movement.MoveHorizontally(0.5f);
+        
         
         Navigation();
     }
@@ -48,13 +48,13 @@ public class EnemyAI : MonoBehaviour, ICharacterManager
 
     private float GetDistance(Vector3 A, Vector3 B)
     {
-        Debug.Log(Vector3.Distance(new Vector3(A.x, 0, 0), new Vector3(B.x, 0, 0)));
+       // Debug.Log(Vector3.Distance(new Vector3(A.x, 0, 0), new Vector3(B.x, 0, 0)));
         return Vector3.Distance(new Vector3(A.x, 0, 0), new Vector3(B.x, 0, 0));
     }
     public void Navigation()
     {
 
-        if (GetDistance(this.transform.position, target.position) <= 20)
+        if (GetDistance(this.transform.position, target.position) <= 30)
         {
             if (eState != EnemyState.Attack)
             {
@@ -81,11 +81,12 @@ public class EnemyAI : MonoBehaviour, ICharacterManager
         {
 
             case EnemyState.Attack:
-                Attacker.PrimaryAttack();
+                Movement.Follow(target);
+                Attacker.PrimaryAttack(target);
                 Console.WriteLine("enemy attacking");
                 break;
             case EnemyState.Patrol:
-                Movement.MoveHorizontally(1f);
+                Movement.Patrol(1f);
                 Console.WriteLine("enemy patrol");
                 break;
             case EnemyState.Dead:

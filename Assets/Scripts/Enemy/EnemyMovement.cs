@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour, IMovement
 {
-    bool inRoutine = false;
-    private Coroutine _prevCoroutine;
+    
+    private Coroutine _patrolCoroutine;
+    private Coroutine _followCoroutine;
     public Transform[] waypoints;
     private int _currentWaypointIndex = 0;
-    private float _speed = 2f;
+    private float _speed = 5f;
 
 
     public void Jump()
@@ -18,40 +19,71 @@ public class EnemyMovement : MonoBehaviour, IMovement
 
     public void MoveHorizontally(float hor)
     {
-        Patrol(hor);
+       
     }
     public void Patrol(float sec)
     {
-       
-         _prevCoroutine = StartCoroutine(_MovingToNextWaypoint(sec));
+        Debug.Log("patrol");
+        if (_followCoroutine!=null)
+        {
+            StopCoroutine(_followCoroutine);
+        }
+         _patrolCoroutine = StartCoroutine(_MovingToNextWaypoint(sec));
          
     }
 
-   
+
     private IEnumerator _MovingToNextWaypoint(float sec)
     {
         Transform wp = waypoints[_currentWaypointIndex];
 
-     while (Mathf.Abs(transform.position.x-wp.position.x)< 1f)
+        while (true)
         {
-            transform.position = Vector3.Lerp(transform.position, wp.position, 0.1f);
+            transform.position = Vector3.MoveTowards(transform.position, wp.position, _speed * Time.deltaTime);
+            if (Vector3.Distance(transform.position, wp.position) <= 0)
+            {
+               
+                    if (_currentWaypointIndex + 1 < waypoints.Length)
+                    {
+                        _currentWaypointIndex += 1;
+                    }
+                    else
+                    {
+                        _currentWaypointIndex = 0;
+                    }
+                    wp = waypoints[_currentWaypointIndex];
+                yield return new WaitForSeconds(sec);
+
+            }
             yield return null;
         }
 
-        transform.position = wp.position;
-        yield return new WaitForSeconds(sec);
-        Debug.Log("new way point");
-        _currentWaypointIndex = (_currentWaypointIndex + 1) % waypoints.Length;
+    
 
-        StopCoroutine(_prevCoroutine);
-        _prevCoroutine = StartCoroutine(_MovingToNextWaypoint(sec));
-        
     }
-
+        
+        
    
     public void Follow(Transform target)
     {
-        throw new System.NotImplementedException();
+        Debug.Log("follow");
+        if (_patrolCoroutine != null)
+        {
+            StopCoroutine(_patrolCoroutine);
+        }
+        _followCoroutine = StartCoroutine(_followTarget(target));
+    }
+
+    private IEnumerator _followTarget(Transform target)
+    {
+
+        while (true)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, target.position, _speed * Time.deltaTime);
+            
+            yield return null;
+        }
+
     }
 
 
