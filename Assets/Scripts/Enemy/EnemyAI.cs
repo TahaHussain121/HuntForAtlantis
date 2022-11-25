@@ -53,7 +53,7 @@ public class EnemyAI : MonoBehaviour, ICharacterManager
     }
     public void Navigation()
     {
-
+        target = Gamemanager.ActiveIInputHandler.GetTransform();
         if (GetDistance(this.transform.position, target.position) <= 30)
         {
             if (eState != EnemyState.Attack)
@@ -86,6 +86,7 @@ public class EnemyAI : MonoBehaviour, ICharacterManager
                 Console.WriteLine("enemy attacking");
                 break;
             case EnemyState.Patrol:
+                Attacker.EndPrimaryAttack();
                 Movement.Patrol(1f);
                 Console.WriteLine("enemy patrol");
                 break;

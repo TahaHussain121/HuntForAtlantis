@@ -3,15 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthPool : MonoBehaviour
+public class HealthPool : Health
 {
-    [SerializeField] int maxHealth=450;
-    [SerializeField] int currentHealth=450;
-    [SerializeField] int healthPerhead;
 
-    [SerializeField]  Slider healthSlider;
-    public delegate void Health(int val);
-    public static Health SetupHealth;
+    [SerializeField] int healthPerhead;
 
     private ICharacterManager characterManager;
     public void OnEnable()
@@ -39,7 +34,7 @@ public class HealthPool : MonoBehaviour
     }
 
     
-    public void TakeDamage(int val)
+    public override void TakeDamage(int val)
     {
         Debug.Log("talking damage");
         if (currentHealth > 0 && currentHealth > val)
@@ -52,7 +47,7 @@ public class HealthPool : MonoBehaviour
 
     }
 
-    public void HealHealthByPercentage(float percentage)
+    public override void HealHealthByPercentage(float percentage)
     {
         currentHealth = Mathf.Clamp(currentHealth += Mathf.RoundToInt(currentHealth * (percentage / 100)), 0, maxHealth);
     }

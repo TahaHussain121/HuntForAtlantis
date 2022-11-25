@@ -1,8 +1,21 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum CharacterType { Satyr, Minotaur, Cerberus,Enemy }
 public enum GameState { Startup, InGame, Pause,Dialogue,End }
 public enum AttackType { Melee, Ranged,Rage }
+public abstract class Health:MonoBehaviour
+{
+    [SerializeField] protected int maxHealth ;
+    [SerializeField] protected int currentHealth ;
+    [SerializeField] protected Slider healthSlider;
+
+    public delegate void HealthDelegate(int val);
+    public static HealthDelegate SetupHealth;
+    public abstract void TakeDamage(int val);
+
+    public abstract void HealHealthByPercentage(float percentage);
+}
 public interface IInputHandler
 {
     Transform GetTransform();

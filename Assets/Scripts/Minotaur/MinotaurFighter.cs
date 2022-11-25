@@ -104,12 +104,17 @@ public class MinotaurFighter : MonoBehaviour, IFighter, IAttackable
             Debug.Log("Something Hit");
             OnAttacked(Attacker.GetCharacterType(), Attacker.GetAttackType());
         }
-        else if (collision.gameObject.tag == "Enemy")
+        else if (collision.gameObject.tag == "Cerberusy")
         {
             Debug.Log("Arrow");
 
             OnAttacked(CharacterType.Cerberus, AttackType.Ranged);
+        }
+        else if (collision.gameObject.tag == "Enemy")
+        {
+            Debug.Log("enemy");
 
+            OnAttacked(CharacterType.Enemy, AttackType.Melee);
 
         }
     }
@@ -124,6 +129,7 @@ public class MinotaurFighter : MonoBehaviour, IFighter, IAttackable
         switch (atype)
         {
             case AttackType.Melee:
+                
                 rageController.IncreaseRage(rageController.attackedWithMeleePoints);
                 break;
 

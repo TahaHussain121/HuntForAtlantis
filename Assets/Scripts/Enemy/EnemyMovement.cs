@@ -76,10 +76,10 @@ public class EnemyMovement : MonoBehaviour, IMovement
 
     private IEnumerator _followTarget(Transform target)
     {
-
+        
         while (true)
         {
-            transform.position = Vector3.MoveTowards(transform.position, target.position, _speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(target.position.x,0,0), _speed * Time.deltaTime);
             
             yield return null;
         }

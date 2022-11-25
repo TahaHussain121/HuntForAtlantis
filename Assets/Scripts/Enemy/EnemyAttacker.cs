@@ -9,7 +9,7 @@ public class EnemyAttacker : MonoBehaviour, IFighter, IAttackable
     [SerializeField] int maxHealth = 150;
     [SerializeField] int currentHealth = 150;
     [SerializeField] private bool isRageBarFull = false;
-
+    private Coroutine _attackCoroutine;
 
     public bool CheckRange(Transform target)
     {
@@ -36,14 +36,31 @@ public class EnemyAttacker : MonoBehaviour, IFighter, IAttackable
 
     public void PrimaryAttack(Transform target)
     {// change it to corutine please
-        if (CheckRange(target))
-        {
-            Debug.Log("attack");
-            //attack animaiton
-        }
+        _attackCoroutine = StartCoroutine(MeleAttack(target));
+        
+    } 
+    public void EndPrimaryAttack()
+    {
+        StopCoroutine(_attackCoroutine); 
         
     }
 
+    private IEnumerator MeleAttack(Transform target)
+    {
+        while (true)
+        {
+
+            if (CheckRange(target))
+            {
+                Debug.Log("attack");
+                //attack animaiton
+            }
+            yield return null;
+        }
+
+
+
+    }
     public void RageAttack()
     {
        // throw new System.NotImplementedException();
