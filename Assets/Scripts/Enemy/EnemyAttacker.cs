@@ -11,6 +11,8 @@ public class EnemyAttacker : MonoBehaviour, IFighter, IAttackable
     [SerializeField] private bool isRageBarFull = false;
     private Coroutine _attackCoroutine;
 
+    public delegate void Damage(int val);
+    public static Damage TakeDamage;
     public bool CheckRange(Transform target)
     {
         Debug.Log("check range");
@@ -35,7 +37,8 @@ public class EnemyAttacker : MonoBehaviour, IFighter, IAttackable
     }
 
     public void PrimaryAttack(Transform target)
-    {// change it to corutine please
+    {
+        attackType = AttackType.Melee;
         _attackCoroutine = StartCoroutine(MeleAttack(target));
         
     } 
@@ -78,16 +81,35 @@ public class EnemyAttacker : MonoBehaviour, IFighter, IAttackable
         //throw new System.NotImplementedException();
     }
 
+    public void OnCollisionEnter(Collision collision)
+    {
+
+        Debug.Log("something hit");
+
+        IAttackable Attacker = collision.gameObject.GetComponent<IAttackable>();
+        if (Attacker != null)
+        {
+            Debug.Log("a hit");
+
+            Attacker.OnAttacked(Attacker.GetCharacterType(), Attacker.GetAttackType());
+        }
+        else if (collision.gameObject.tag == "Player")
+        {
+            Debug.Log("p");
+
+        }
+
+    }
     public void OnAttacked(CharacterType ctype, AttackType atype)
     {
         switch (atype)
         {
             case AttackType.Melee:
-              
+                TakeDamage(10);
                 break;
 
             case AttackType.Ranged:
-               
+                TakeDamage(10);
                 break;
         }
     }

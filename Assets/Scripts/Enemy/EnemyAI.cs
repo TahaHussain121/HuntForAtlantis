@@ -46,6 +46,7 @@ public class EnemyAI : MonoBehaviour, ICharacterManager
 
     }
 
+    
     private float GetDistance(Vector3 A, Vector3 B)
     {
        // Debug.Log(Vector3.Distance(new Vector3(A.x, 0, 0), new Vector3(B.x, 0, 0)));

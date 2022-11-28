@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour, IMovement
 {
-    
+
     private Coroutine _patrolCoroutine;
     private Coroutine _followCoroutine;
     public Transform[] waypoints;
     private int _currentWaypointIndex = 0;
-    private float _speed = 5f;
+    [SerializeField] float _speed = 5f;
 
 
     public void Jump()

@@ -104,7 +104,7 @@ public class MinotaurFighter : MonoBehaviour, IFighter, IAttackable
             Debug.Log("Something Hit");
             OnAttacked(Attacker.GetCharacterType(), Attacker.GetAttackType());
         }
-        else if (collision.gameObject.tag == "Cerberusy")
+        else if (collision.gameObject.tag == "Cerberus")
         {
             Debug.Log("Arrow");
 

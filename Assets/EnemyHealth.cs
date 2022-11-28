@@ -4,23 +4,31 @@ using UnityEngine;
 
 public class EnemyHealth : Health
 {
-    void Start()
+    public void OnEnable()
     {
-
+      
+        EnemyAttacker.TakeDamage += TakeDamage;
     }
-
-     void Update()
+    public void OnDisable()
     {
-
+        EnemyAttacker.TakeDamage -= TakeDamage;
     }
+   
     public override void HealHealthByPercentage(float percentage)
     {
-        throw new System.NotImplementedException();
+        currentHealth = Mathf.Clamp(currentHealth += Mathf.RoundToInt(currentHealth * (percentage / 100)), 0, maxHealth);
+
     }
 
     public override void TakeDamage(int val)
     {
-        throw new System.NotImplementedException();
+        Debug.Log("taking damage");
+        if (currentHealth > 0 && currentHealth > val)
+        {
+            currentHealth = currentHealth - val;
+          
+
+        }
     }
 
    

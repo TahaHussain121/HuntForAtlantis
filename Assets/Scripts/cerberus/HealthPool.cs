@@ -36,7 +36,7 @@ public class HealthPool : Health
     
     public override void TakeDamage(int val)
     {
-        Debug.Log("talking damage");
+        Debug.Log("taking damage");
         if (currentHealth > 0 && currentHealth > val)
         {
             currentHealth = currentHealth - val;
