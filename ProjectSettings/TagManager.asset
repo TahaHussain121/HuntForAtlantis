@@ -9,6 +9,7 @@ TagManager:
   - Minotaur
   - Wall
   - PickableBlock
+  - BreakableBlock
   layers:
   - Default
   - TransparentFX
