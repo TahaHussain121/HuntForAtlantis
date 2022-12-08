@@ -6,13 +6,16 @@ public class EnemyAttacker : MonoBehaviour, IFighter, IAttackable
 {
     [SerializeField] private AttackType attackType;
     [SerializeField] private CharacterType characterType = CharacterType.Enemy;
-    [SerializeField] int maxHealth = 150;
-    [SerializeField] int currentHealth = 150;
     [SerializeField] private bool isRageBarFull = false;
+    HealthController healthController;
+
     private Coroutine _attackCoroutine;
 
-    public delegate void Damage(int val);
-    public static Damage TakeDamage;
+    public void OnEnable()
+    {
+        healthController= GetComponent<HealthController>();
+    }
+
     public bool CheckRange(Transform target)
     {
         Debug.Log("check range");
@@ -84,32 +87,41 @@ public class EnemyAttacker : MonoBehaviour, IFighter, IAttackable
     public void OnCollisionEnter(Collision collision)
     {
 
-        Debug.Log("something hit");
+        Debug.Log("something hit"+collision.gameObject.tag);
 
         IAttackable Attacker = collision.gameObject.GetComponent<IAttackable>();
         if (Attacker != null)
         {
             Debug.Log("a hit");
 
-            Attacker.OnAttacked(Attacker.GetCharacterType(), Attacker.GetAttackType());
+            
         }
-        else if (collision.gameObject.tag == "Player")
+        
+
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Arrow")
         {
-            Debug.Log("p");
+
+            OnAttacked(CharacterType.Satyr, AttackType.Ranged);
+
 
         }
-
     }
     public void OnAttacked(CharacterType ctype, AttackType atype)
     {
         switch (atype)
         {
             case AttackType.Melee:
-                TakeDamage(10);
+                healthController.TakeDamage(10);
+
                 break;
 
             case AttackType.Ranged:
-                TakeDamage(10);
+                healthController.TakeDamage(10);
+
                 break;
         }
     }

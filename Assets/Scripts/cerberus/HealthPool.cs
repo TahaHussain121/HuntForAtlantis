@@ -13,12 +13,10 @@ public class HealthPool : Health
     {
         healthSlider.maxValue = maxHealth;
         healthSlider.minValue = 0;
-        CerberusAttacker.TakeDamage += TakeDamage;
+        healthSlider.value = currentHealth;
+     
     }
-    public void OnDisable()
-    {
-        CerberusAttacker.TakeDamage -= TakeDamage;
-    }
+    
     private void Awake()
     {
         characterManager = GetComponent<ICharacterManager>();
@@ -37,7 +35,7 @@ public class HealthPool : Health
     public override void TakeDamage(int val)
     {
         Debug.Log("taking damage");
-        if (currentHealth > 0 && currentHealth > val)
+        if (currentHealth > 0 && currentHealth >= val)
         {
             currentHealth = currentHealth - val;
             healthSlider.value = currentHealth;

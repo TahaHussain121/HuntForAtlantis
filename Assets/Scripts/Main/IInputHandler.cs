@@ -38,6 +38,7 @@ public interface ICharacterManager
     IFighter GetCharacterFighter();
     IMovement GetCharacterMovement();
     RageController GetRageController();
+    Health GetHealthController();
 }
 public interface IFighter
 {

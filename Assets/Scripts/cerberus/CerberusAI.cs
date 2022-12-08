@@ -60,4 +60,9 @@ public class CerberusAI : MonoBehaviour, ICharacterManager
 
         attacker.OnRageBarEmptied();
     }
+
+    public Health GetHealthController()
+    {
+       return GetComponent<HealthPool>();
+    }
 }

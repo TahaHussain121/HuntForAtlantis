@@ -13,12 +13,17 @@ public class EnemyAI : MonoBehaviour, ICharacterManager
     [SerializeField] EnemyAttacker Attacker;
     [SerializeField] EnemyMovement Movement;
 
+    public void Awake()
+    {
+        Attacker = gameObject.GetComponent<EnemyAttacker>();
+        Movement = gameObject.GetComponent<EnemyMovement>();
+        Movement.InitializeWaypoints();
+    }
     public void Start()
     {
         target = Gamemanager.ActiveIInputHandler.GetTransform();
         // Movement.MoveHorizontally(0.5f);
-        Attacker = gameObject.GetComponent<EnemyAttacker>();
-        Movement = gameObject.GetComponent<EnemyMovement>();
+       
         Movement.Patrol(1f);
 
     }
@@ -47,15 +52,21 @@ public class EnemyAI : MonoBehaviour, ICharacterManager
     }
 
     
-    private float GetDistance(Vector3 A, Vector3 B)
+    private Vector2 GetDistance(Vector3 A, Vector3 B)
     {
-       // Debug.Log(Vector3.Distance(new Vector3(A.x, 0, 0), new Vector3(B.x, 0, 0)));
-        return Vector3.Distance(new Vector3(A.x, 0, 0), new Vector3(B.x, 0, 0));
+        return new Vector2(Mathf.Sqrt(Mathf.Pow((A.x-B.x),2)), Mathf.Sqrt(Mathf.Pow((A.y - B.y), 2)));
     }
+
+    //private float GetDistance(Vector3 A, Vector3 B)
+    //{
+    //    return Vector3.Distance(new Vector3(A.x, A.y, 0), new Vector3(B.x,B.y, 0));
+    //}
     public void Navigation()
     {
         target = Gamemanager.ActiveIInputHandler.GetTransform();
-        if (GetDistance(this.transform.position, target.position) <= 30)
+        Vector2 dist = GetDistance(this.transform.position, target.position);
+       // Debug.Log("y distance"+dist.y);
+        if ( dist.x<= 10&&dist.y<8)
         {
             if (eState != EnemyState.Attack)
             {
@@ -97,5 +108,11 @@ public class EnemyAI : MonoBehaviour, ICharacterManager
                 break;
           
         }
+    }
+
+    public Health GetHealthController()
+    {
+        return gameObject.GetComponent<HealthController>();
+        
     }
 }

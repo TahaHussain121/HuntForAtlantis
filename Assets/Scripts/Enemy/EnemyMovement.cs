@@ -7,10 +7,18 @@ public class EnemyMovement : MonoBehaviour, IMovement
 
     private Coroutine _patrolCoroutine;
     private Coroutine _followCoroutine;
-    public Transform[] waypoints;
+   [SerializeField] private List<Vector3> waypoints;
+    [SerializeField] private int pointDistance=10;
     private int _currentWaypointIndex = 0;
     [SerializeField] float _speed = 5f;
 
+    public void InitializeWaypoints()
+    {
+        Vector3 wayPoint1 = new Vector3(this.transform.position.x - pointDistance, this.transform.position.y, this.transform.position.z); 
+        Vector3 wayPoint2 = new Vector3(this.transform.position.x + pointDistance, this.transform.position.y, this.transform.position.z);
+        waypoints.Add(wayPoint1);
+        waypoints.Add(wayPoint2);
+    }
 
     public void Jump()
     {
@@ -35,15 +43,16 @@ public class EnemyMovement : MonoBehaviour, IMovement
 
     private IEnumerator _MovingToNextWaypoint(float sec)
     {
-        Transform wp = waypoints[_currentWaypointIndex];
+       // Transform wp = waypoints[_currentWaypointIndex];
+        Vector3 wp = waypoints[_currentWaypointIndex];
 
         while (true)
         {
-            transform.position = Vector3.MoveTowards(transform.position, wp.position, _speed * Time.deltaTime);
-            if (Vector3.Distance(transform.position, wp.position) <= 0)
+            transform.position = Vector3.MoveTowards(transform.position, wp, _speed * Time.deltaTime);
+            if (Vector3.Distance(transform.position, wp) <= 0)
             {
                
-                    if (_currentWaypointIndex + 1 < waypoints.Length)
+                    if (_currentWaypointIndex + 1 < waypoints.Count)
                     {
                         _currentWaypointIndex += 1;
                     }
@@ -79,7 +88,7 @@ public class EnemyMovement : MonoBehaviour, IMovement
         
         while (true)
         {
-            transform.position = Vector3.MoveTowards(transform.position, new Vector3(target.position.x,0,0), _speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(target.position.x, transform.position.y, transform.position.z), _speed * Time.deltaTime);
             
             yield return null;
         }
