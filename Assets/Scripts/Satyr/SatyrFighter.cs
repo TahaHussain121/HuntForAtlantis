@@ -76,7 +76,7 @@ public class SatyrFighter : MonoBehaviour, IFighter, IAttackable
     }
     public void OnArrowShootingAnimEnd() // called from animation event
     {
-        //print("OnRangeAttackAnimEnd() called");
+        print("OnArrowShootingAnimEnd() called");
         Invoke("RotateBack", 0.5f);
         ShootProjectile();
         isAttacking = false;
@@ -146,11 +146,18 @@ public class SatyrFighter : MonoBehaviour, IFighter, IAttackable
             Debug.Log("Something Hit");
             OnAttacked(Attacker.GetCharacterType(), Attacker.GetAttackType());
         }
-        else if (collision.gameObject.tag == "Enemy")
+        else if (collision.gameObject.tag == "Cerberus")
         {
             Debug.Log("Arrow");
 
             OnAttacked(CharacterType.Cerberus, AttackType.Ranged);
+
+        }
+        else if (collision.gameObject.tag == "Enemy")
+        {
+            Debug.Log("enemy");
+
+            OnAttacked(CharacterType.Enemy, AttackType.Melee);
 
         }
     }

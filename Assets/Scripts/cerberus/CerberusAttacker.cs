@@ -135,7 +135,7 @@ public class CerberusAttacker : MonoBehaviour, IFighter, IAttackable
         for (int i = 0; i < cb.Count; i++)
         {
             FireBallAttack(Target, cb[i]);
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(1.5f);//0.5 to 4
         }
 
         isAttacking = false;
