@@ -13,28 +13,28 @@ public class EnemySpawn : MonoBehaviour
     public float minTime = 5.0f;
     public float maxTime = 15.0f;
 
-    //IEnumerator SpawnObject(float seconds, int point)
-    //{
-    //    Debug.Log("Waiting for " + seconds + " seconds");
+    IEnumerator SpawnObject(float seconds, int point)
+    {
+        Debug.Log("Waiting for " + seconds + " seconds");
 
-    //    yield return new WaitForSeconds(seconds);
-    //    Instantiate( enemyPrefab, spawnPoints[point].position, spawnPoints[point].rotation);
+        yield return new WaitForSeconds(seconds);
+        Instantiate(enemyPrefab, spawnPoints[point]);
 
-    //    //We've spawned, so now we could start another spawn     
-    //    isSpawning = false;
-    //}
+        //We've spawned, so now we could start another spawn     
+        isSpawning = false;
+    }
 
-    //void Update()
-    //{
-    //    //We only want to spawn one at a time, so make sure we're not already making that call
-    //    if (!isSpawning)
-    //    {
-    //        isSpawning = true; //Yep, we're going to spawn
+    void Update()
+    {
+        //We only want to spawn one at a time, so make sure we're not already making that call
+        if (!isSpawning)
+        {
+            isSpawning = true; //Yep, we're going to spawn
 
-    //        int pointindex= Random.Range(0, spawnPoints.Count);
-    //        StartCoroutine(SpawnObject( Random.Range(minTime, maxTime),pointindex));
-    //    }
-    //}
+            int pointindex = Random.Range(0, spawnPoints.Count);
+            StartCoroutine(SpawnObject(Random.Range(minTime, maxTime), pointindex));
+        }
+    }
     void Awake()
     {
         
