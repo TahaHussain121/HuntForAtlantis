@@ -8,7 +8,15 @@ public class Gamemanager : Singleton<Gamemanager>
     [SerializeField]
     private CinemachineVirtualCamera mainVCam;
     [SerializeField]
-    private Transform character1;
+    private Transform character1; 
+    [SerializeField]
+    private GamestateManager stateManager;
+
+    internal static void GameOver()
+    {
+        //throw new NotImplementedException();
+    }
+
     [SerializeField]
     private Transform character2;
 

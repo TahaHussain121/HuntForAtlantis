@@ -10,8 +10,6 @@ public class SatyrFighter : MonoBehaviour, IFighter, IAttackable
     [SerializeField] private float projectileSpeed;
     [SerializeField] int maxAmmo = 15;
     [SerializeField] int currentAmmo = 15;
-    [SerializeField] int maxHealth = 100;
-    [SerializeField] int currentHealth = 100;
     [SerializeField] private AttackType attackType;
     [SerializeField] private CharacterType characterType = CharacterType.Satyr;
     [SerializeField] private bool isRageBarFull = false;
@@ -76,7 +74,7 @@ public class SatyrFighter : MonoBehaviour, IFighter, IAttackable
     }
     public void OnArrowShootingAnimEnd() // called from animation event
     {
-        //print("OnRangeAttackAnimEnd() called");
+        print("OnArrowShootingAnimEnd() called");
         Invoke("RotateBack", 0.5f);
         ShootProjectile();
         isAttacking = false;
@@ -124,10 +122,7 @@ public class SatyrFighter : MonoBehaviour, IFighter, IAttackable
         }
         GameObject spawnedProjectile = Instantiate(rangeProjectile, bow.transform.position, Quaternion.Euler(rotation));
     }
-    public void HealHealthByPercentage(float percentage)
-    {
-        currentHealth = Mathf.Clamp(currentHealth += Mathf.RoundToInt(currentHealth * (percentage / 100)), 0, maxHealth);
-    }
+  
     public void OnRageBarFilled()
     {
         isRageBarFull = true;
@@ -138,7 +133,7 @@ public class SatyrFighter : MonoBehaviour, IFighter, IAttackable
         characterManager.GetRageController().ResetRage();
     }
 
-    private void OnTriggerEnter(Collider collision)
+    private void OnCollisionEnter(Collision collision)
     {
         IAttackable Attacker = collision.gameObject.GetComponent<IAttackable>();
         if (Attacker != null)
@@ -148,10 +143,20 @@ public class SatyrFighter : MonoBehaviour, IFighter, IAttackable
         }
         else if (collision.gameObject.tag == "Enemy")
         {
+            Debug.Log("enemy");
+
+            OnAttacked(CharacterType.Enemy, AttackType.Melee);
+
+        }
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Cerberus")
+        {
             Debug.Log("Arrow");
 
             OnAttacked(CharacterType.Cerberus, AttackType.Ranged);
-
         }
     }
     public void OnAttacked(CharacterType ctype, AttackType atype) // NOTE: what is the use for cType?
@@ -159,15 +164,19 @@ public class SatyrFighter : MonoBehaviour, IFighter, IAttackable
         if (isInvincible) return;
 
         RageController rageController = characterManager.GetRageController();
+        Health healthController = characterManager.GetHealthController();
 
         switch (atype)
         {
             case AttackType.Melee:
                 rageController.IncreaseRage(rageController.attackedWithMeleePoints);
+                healthController.TakeDamage(10);
                 break;
 
             case AttackType.Ranged:
                 rageController.IncreaseRage(rageController.attackedWithRangePoints);
+                healthController.TakeDamage(10);
+
                 break;
         }
     }

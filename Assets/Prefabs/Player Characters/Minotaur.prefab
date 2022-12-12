@@ -483,6 +483,9 @@ GameObject:
   - component: {fileID: 1650561200597704579}
   - component: {fileID: 1650561200597704700}
   - component: {fileID: 1650561200597704701}
+  - component: {fileID: 4826762257381103931}
+  - component: {fileID: 516410534603316440}
+  - component: {fileID: 8805045997265266637}
   m_Layer: 0
   m_Name: Minotaur
   m_TagString: Player
@@ -591,8 +594,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7c722dcfb18ceb45b0928dceed4b990, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 150
-  currentHealth: 150
   dashSpeed: 0
   isRageBarFull: 0
   isAttacking: 0
@@ -626,6 +627,51 @@ MonoBehaviour:
   xAdjuster: 1.5
   yAdjuster: -0.3
   slipSpeed: 3
+--- !u!136 &4826762257381103931
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034304885642484559}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.42
+  m_Height: 2.22
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.94, z: 0}
+--- !u!114 &516410534603316440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034304885642484559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3b412e240e3733409507ff9bd2c164e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 150
+  currentHealth: 150
+  healthSlider: {fileID: 0}
+--- !u!54 &8805045997265266637
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034304885642484559}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1101306223135141950
 GameObject:
   m_ObjectHideFlags: 0

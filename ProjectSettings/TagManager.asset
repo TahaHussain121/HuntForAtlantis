@@ -11,6 +11,7 @@ TagManager:
   - PickableBlock
   - target
   - Arrow
+  - Cerberus
   layers:
   - Default
   - TransparentFX

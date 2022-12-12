@@ -33,12 +33,12 @@ public class CerberusHead: MonoBehaviour
     }
     public void OnEnable()
     {
-        CerberusAttacker.TakeDamage += UpdateHealth;
+      //  CerberusAttacker.TakeDamage += UpdateHealth;
         HealthPool.SetupHealth += setupHealth;
     }  
     public void OnDisable()
     {
-        CerberusAttacker.TakeDamage -= UpdateHealth;
+       // CerberusAttacker.TakeDamage -= UpdateHealth;
         HealthPool.SetupHealth -= setupHealth;
     }
     public void ThrowFireball(Transform target)
@@ -97,7 +97,8 @@ public class CerberusHead: MonoBehaviour
    }
    public void Shake()
     {
-        shakeEffect.StartShake(0.5f, 0.2f, 0f);
+        shakeEffect.StartShake(1f, 1f, 0f);
+      //  shakeEffect.StartShake(0.5f, 0.2f, 0f);
     }
     public void ThrowLaserbeam()
     {
@@ -113,14 +114,14 @@ public class CerberusHead: MonoBehaviour
         currentHealth = maxHealth;
     
     }
-    private void UpdateHealth(int val)
+    public void UpdateHealth(int val)
     {
-        if (currentHealth > val)
+        if (currentHealth >= val)
         {
             currentHealth -= val;
            
         }
-        else
+        if(currentHealth<=0)
         {
             onDeath(this);
 

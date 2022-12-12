@@ -20,6 +20,9 @@ public class RageController : MonoBehaviour
 
     private void Awake()
     {
+        rageSlider.value = currentRagevalue;
+        rageSlider.maxValue = MaxRagevalue;
+        rageSlider.minValue = 0;
         characterManager = GetComponent<ICharacterManager>();
     }
     public void LateUpdate()
@@ -31,14 +34,14 @@ public class RageController : MonoBehaviour
         if (currentRagevalue < MaxRagevalue)
         {
             currentRagevalue += val;
-            Mathf.Min(currentRagevalue, MaxRagevalue);
+            // Mathf.Min(currentRagevalue, MaxRagevalue);
 
             rageSlider.value = currentRagevalue;
-
             if (currentRagevalue >= MaxRagevalue)
             {
                 characterManager.GetCharacterFighter().OnRageBarFilled();
             }
+           
         }
     }
     public void DecreaseRage(int val)

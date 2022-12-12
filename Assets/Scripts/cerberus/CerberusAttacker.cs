@@ -21,8 +21,7 @@ public class CerberusAttacker : MonoBehaviour, IFighter, IAttackable
     private bool isInvincible;
     private bool isMele = false;
 
-    public delegate void Damage(int val);
-    public static Damage TakeDamage;
+   
     public void OnEnable()
     {
         CerberusHead.OnDeath += OnDeath;
@@ -135,7 +134,7 @@ public class CerberusAttacker : MonoBehaviour, IFighter, IAttackable
         for (int i = 0; i < cb.Count; i++)
         {
             FireBallAttack(Target, cb[i]);
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(1.5f);//0.5 to 4
         }
 
         isAttacking = false;
@@ -180,6 +179,7 @@ public class CerberusAttacker : MonoBehaviour, IFighter, IAttackable
                 cb[i].ResetPos();
             }
         }
+        yield return new WaitForSeconds(1f);
         isAttacking = false;
         OnRageBarEmptied();
 
@@ -249,7 +249,7 @@ public class CerberusAttacker : MonoBehaviour, IFighter, IAttackable
         if (isInvincible) return;
 
         RageController rageController = characterManager.GetRageController();
-
+        Health healthController = characterManager.GetHealthController();
         if (ctype == CharacterType.Minotaur)
         {
             switch (atype)
@@ -257,13 +257,15 @@ public class CerberusAttacker : MonoBehaviour, IFighter, IAttackable
                 case AttackType.Melee:
                     Debug.Log("Minataur melee");
                     rageController.IncreaseRage(rageController.attackedWithMeleePoints);
-                    TakeDamage(10);
+                    head.UpdateHealth(10);
+                    healthController.TakeDamage(10);
                     MeleeAttack();
                     break;
 
                 case AttackType.Ranged:
                     rageController.IncreaseRage(rageController.attackedWithRangePoints);
-                    TakeDamage(10);
+                    head.UpdateHealth(10);
+                    healthController.TakeDamage(10);
                     break;
             }
 
@@ -274,12 +276,14 @@ public class CerberusAttacker : MonoBehaviour, IFighter, IAttackable
             {
                 case AttackType.Melee:
                     rageController.IncreaseRage(rageController.attackedWithMeleePoints);
-                    TakeDamage(10);
+                    head.UpdateHealth(10);
+                    healthController.TakeDamage(10);
                     break;
 
                 case AttackType.Ranged:
                     rageController.IncreaseRage(rageController.attackedWithRangePoints);
-                    TakeDamage(10);
+                    head.UpdateHealth(10);
+                    healthController.TakeDamage(10);
                     break;
             }
         }
