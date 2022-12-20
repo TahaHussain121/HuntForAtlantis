@@ -12,7 +12,8 @@ public class SatyrFighter : MonoBehaviour, IFighter, IAttackable
     [SerializeField] int currentAmmo = 15;
     [SerializeField] int maxHealth = 100;
     [SerializeField] int currentHealth = 100;
-
+    [SerializeField] private AttackType attackType;
+    [SerializeField] private CharacterType characterType = CharacterType.Satyr;
     [SerializeField] private bool isRageBarFull = false;
 
     private Animator anim;
@@ -29,12 +30,16 @@ public class SatyrFighter : MonoBehaviour, IFighter, IAttackable
     }
     public void PrimaryAttack()
     {
+        attackType = AttackType.Ranged;
+
         StartArrowShootingAnim();
     }
     public void RageAttack()
     {
         if (isRageBarFull)
         {
+            attackType = AttackType.Rage;
+
             StartArrowSpawningAnim();
         }
     }
@@ -132,6 +137,23 @@ public class SatyrFighter : MonoBehaviour, IFighter, IAttackable
         isRageBarFull = false;
         characterManager.GetRageController().ResetRage();
     }
+
+    private void OnTriggerEnter(Collider collision)
+    {
+        IAttackable Attacker = collision.gameObject.GetComponent<IAttackable>();
+        if (Attacker != null)
+        {
+            Debug.Log("Something Hit");
+            OnAttacked(Attacker.GetCharacterType(), Attacker.GetAttackType());
+        }
+        else if (collision.gameObject.tag == "Enemy")
+        {
+            Debug.Log("Arrow");
+
+            OnAttacked(CharacterType.Cerberus, AttackType.Ranged);
+
+        }
+    }
     public void OnAttacked(CharacterType ctype, AttackType atype) // NOTE: what is the use for cType?
     {
         if (isInvincible) return;
@@ -152,5 +174,15 @@ public class SatyrFighter : MonoBehaviour, IFighter, IAttackable
     public void OnPrimaryAtttackLanded()
     {
         characterManager.GetRageController().IncreaseRage(characterManager.GetRageController().primaryAttackPoints);
+    }
+
+    public AttackType GetAttackType()
+    {
+        return attackType;
+    }
+
+    public CharacterType GetCharacterType()
+    {
+        return characterType;
     }
 }

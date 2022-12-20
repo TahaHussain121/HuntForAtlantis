@@ -84,7 +84,7 @@ public class AdvanceGroundChecker : MonoBehaviour
         Gizmos.DrawRay(ray_spwan_pos, right);
         Gizmos.DrawRay(ray_spwan_pos, left);
     }
-        public float GetDistance(Vector3 A, Vector3 B)
+    public float GetDistance(Vector3 A, Vector3 B)
     {
         return Vector3.Distance(new Vector3(0, A.y, 0), new Vector3(0, B.y, 0));
     }
