@@ -12,7 +12,7 @@ public class LevelManager : MonoBehaviour
     /// <summary>
     /// add name of scenes here
     /// </summary>
-    public enum Levels { MainMenu, GamePlay }
+    public enum Levels { T_Lvl_1, T_Lvl_2, T_Lvl_3 }
 
     /// <summary>
     /// Assign Name of next scene to be loaded

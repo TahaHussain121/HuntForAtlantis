@@ -7,8 +7,8 @@ public class EnemySpawn : MonoBehaviour
    [SerializeField] List<Transform> spawnPoints;
     [SerializeField] GameObject enemyPrefab;
     [SerializeField] List<GameObject> enemyList;
-   
-
+    public bool periodicSpawn = false;
+    public Vector3 scale;
     bool isSpawning = false;
     public float minTime = 5.0f;
     public float maxTime = 15.0f;
@@ -26,13 +26,16 @@ public class EnemySpawn : MonoBehaviour
 
     void Update()
     {
-        //We only want to spawn one at a time, so make sure we're not already making that call
-        if (!isSpawning)
+        if (periodicSpawn)
         {
-            isSpawning = true; //Yep, we're going to spawn
+            //We only want to spawn one at a time, so make sure we're not already making that call
+            if (!isSpawning)
+            {
+                isSpawning = true; //Yep, we're going to spawn
 
-            int pointindex = Random.Range(0, spawnPoints.Count);
-            StartCoroutine(SpawnObject(Random.Range(minTime, maxTime), pointindex));
+                int pointindex = Random.Range(0, spawnPoints.Count);
+                StartCoroutine(SpawnObject(Random.Range(minTime, maxTime), pointindex));
+            }
         }
     }
     void Awake()
@@ -44,7 +47,9 @@ public class EnemySpawn : MonoBehaviour
     {
         foreach (Transform spawnPt in spawnPoints)
         {
-            enemyList.Add(Instantiate(enemyPrefab, spawnPt));
+            GameObject ob = Instantiate(enemyPrefab, spawnPt);
+            ob.transform.localScale = scale;
+            enemyList.Add(ob);
         }
     }
 }

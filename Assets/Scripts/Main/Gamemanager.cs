@@ -67,4 +67,6 @@ public class Gamemanager : Singleton<Gamemanager>
         Char.GetComponent<CharacterController>().enabled = chControl;
 
     }
+
+    //if levels are tuts levels off character switching
 }
