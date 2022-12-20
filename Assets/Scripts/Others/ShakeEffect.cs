@@ -21,11 +21,11 @@ public class ShakeEffect: MonoBehaviour
         _startPos = transform.position;
     }
 
-    private void OnValidate()
-    {
-        if (_delayBetweenShakes > _time)
-            _delayBetweenShakes = _time;
-    }
+    //private void OnValidate()
+    //{
+    //    if (_delayBetweenShakes > _time)
+    //        _delayBetweenShakes = _time;
+    //}
 
     [ContextMenu("Beginl")]
     public void Begin()
@@ -69,7 +69,7 @@ public class ShakeEffect: MonoBehaviour
     {
         _timer = 0f;
 
-        while (_timer < _time)
+        while (_timer < 1)
         {
             _timer += Time.deltaTime;
 
