@@ -5,9 +5,10 @@ using UnityEngine;
 public class Lava : MonoBehaviour
 {
     [SerializeField] float upSpeed;
+    public bool isMovingUp;
     private void Update()
     {
-        transform.position += Vector3.up * upSpeed * Time.deltaTime;
+        if (isMovingUp) transform.position += Vector3.up * upSpeed * Time.deltaTime;
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -15,5 +16,9 @@ public class Lava : MonoBehaviour
         {
             Gamemanager.GameOver();
         }
+    }
+    public void Move()
+    {
+        isMovingUp = true;
     }
 }

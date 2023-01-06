@@ -1,30 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class HealthPool : MonoBehaviour
+public class HealthPool : Health
 {
-    [SerializeField] int maxHealth=450;
-    [SerializeField] int currentHealth=450;
+
     [SerializeField] int healthPerhead;
-    public delegate void Health(int val);
-    public static Health SetupHealth;
 
     private ICharacterManager characterManager;
     public void OnEnable()
     {
-        CerberusAttacker.TakeDamage += TakeDamage;
+        healthSlider.maxValue = maxHealth;
+        healthSlider.minValue = 0;
+        healthSlider.value = currentHealth;
+     
     }
-    public void OnDisable3()
-    {
-        CerberusAttacker.TakeDamage -= TakeDamage;
-    }
+    
     private void Awake()
     {
         characterManager = GetComponent<ICharacterManager>();
     }
     public void Start()
     {
+  
         healthPerhead = maxHealth / 3;
         if (SetupHealth != null)
         {
@@ -33,12 +32,20 @@ public class HealthPool : MonoBehaviour
     }
 
     
-    public void TakeDamage(int val)
+    public override void TakeDamage(int val)
     {
-        currentHealth = currentHealth - val;
+        Debug.Log("taking damage");
+        if (currentHealth > 0 && currentHealth >= val)
+        {
+            currentHealth = currentHealth - val;
+            healthSlider.value = currentHealth;
+            Debug.Log(healthSlider.value);
+
+        }
+
     }
 
-    public void HealHealthByPercentage(float percentage)
+    public override void HealHealthByPercentage(float percentage)
     {
         currentHealth = Mathf.Clamp(currentHealth += Mathf.RoundToInt(currentHealth * (percentage / 100)), 0, maxHealth);
     }

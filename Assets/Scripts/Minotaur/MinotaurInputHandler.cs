@@ -61,4 +61,8 @@ public class MinotaurInputHandler : MonoBehaviour, IInputHandler, ICharacterMana
         return rageController;
     }
 
+    public Health GetHealthController()
+    {
+        return GetComponent<HealthController>();
+    }
 }

@@ -5,10 +5,9 @@ using UnityEngine;
 
 public class MinotaurFighter : MonoBehaviour, IFighter, IAttackable
 {
-    [SerializeField] int maxHealth = 150;
-    [SerializeField] int currentHealth = 150;
     [SerializeField] float dashSpeed;
     [SerializeField] private bool isRageBarFull = false;
+    [SerializeField] private float breakableBlockDistance;
 
     private Animator anim;
     private ICharacterManager characterManager;
@@ -74,7 +73,21 @@ public class MinotaurFighter : MonoBehaviour, IFighter, IAttackable
     public void OnMeleeAnimEnd() // called from animation event
     {
         isAttacking = false;
+        CheckBreakableBlock();
     }
+
+    private void CheckBreakableBlock()
+    {
+        RaycastHit[] hits = Physics.RaycastAll(transform.position, directionFacing, breakableBlockDistance);
+        foreach (RaycastHit hit in hits)
+        {
+            if (hit.transform.tag == "BreakableBlock")
+            {
+                Destroy(hit.transform.gameObject);
+            }
+        }
+    }
+
     public void OnDashAnimEnd() // called from animation event
     {
         isAttacking = false;
@@ -82,10 +95,7 @@ public class MinotaurFighter : MonoBehaviour, IFighter, IAttackable
 
         OnRageBarEmptied();
     }
-    public void HealHealthByPercentage(float percentage)
-    {
-        currentHealth = Mathf.Clamp(currentHealth += Mathf.RoundToInt(currentHealth * (percentage / 100)), 0, maxHealth);
-    }
+  
     public void OnRageBarFilled()
     {
         isRageBarFull = true;
@@ -96,39 +106,59 @@ public class MinotaurFighter : MonoBehaviour, IFighter, IAttackable
         characterManager.GetRageController().ResetRage();
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public void OnCollisionEnter(Collision collision)
     {
+        Debug.Log("Something Hit");
+
         IAttackable Attacker = collision.gameObject.GetComponent<IAttackable>();
         if (Attacker != null)
         {
             Debug.Log("Something Hit");
             OnAttacked(Attacker.GetCharacterType(), Attacker.GetAttackType());
         }
-        else if (collision.gameObject.tag == "Enemy")
+        else if (collision.gameObject.tag == "Cerberus")
         {
             Debug.Log("Arrow");
 
             OnAttacked(CharacterType.Cerberus, AttackType.Ranged);
+        }
+        else if (collision.gameObject.tag == "Enemy")
+        {
+            Debug.Log("enemy");
 
+            OnAttacked(CharacterType.Enemy, AttackType.Melee);
 
         }
     }
 
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Cerberus")
+        {
+            Debug.Log("Arrow");
+
+            OnAttacked(CharacterType.Cerberus, AttackType.Ranged);
+        }
+    }
 
     public void OnAttacked(CharacterType ctype, AttackType atype) // NOTE: what is the use for cType?
     {
         if (isInvincibleInRage) return;
 
         RageController rageController = characterManager.GetRageController();
+        Health healthController = characterManager.GetHealthController();
 
         switch (atype)
         {
             case AttackType.Melee:
+                
                 rageController.IncreaseRage(rageController.attackedWithMeleePoints);
+                healthController.TakeDamage(10);
                 break;
 
             case AttackType.Ranged:
                 rageController.IncreaseRage(rageController.attackedWithRangePoints);
+                healthController.TakeDamage(10);
                 break;
         }
     }

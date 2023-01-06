@@ -58,4 +58,9 @@ public class SatyrInputHandler : MonoBehaviour, IInputHandler,ICharacterManager
     {
         Debug.LogError("Interact ability for satyr has not been implemented yet.");
     }
+
+    public Health GetHealthController()
+    {
+        return GetComponent<HealthController>();
+    }
 }

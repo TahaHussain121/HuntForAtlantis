@@ -8,15 +8,17 @@ public class Gamemanager : Singleton<Gamemanager>
     [SerializeField]
     private CinemachineVirtualCamera mainVCam;
     [SerializeField]
-    private Transform character1;
+    private Transform character1; 
+    [SerializeField]
+    private GamestateManager stateManager; //empty?
 
+
+    [SerializeField]
+    private Transform character2;
     internal static void GameOver()
     {
         //throw new NotImplementedException();
     }
-
-    [SerializeField]
-    private Transform character2;
 
     public static IInputHandler Character1 => Instance.character1.GetComponent<IInputHandler>();
     public static IInputHandler Character2 => Instance.character2.GetComponent<IInputHandler>();
@@ -28,12 +30,15 @@ public class Gamemanager : Singleton<Gamemanager>
     private void Awake()
     {
         activeIInputHandler = Character1;
-        Switch(Instance.character1, true);
-        Switch(Instance.character2, false);
+
+        if (Instance.character1 != null) Switch(Instance.character1, true);
+        if (Instance.character2 != null) Switch(Instance.character2, false);
+
     }
 
     public static void SwitchCharacter()
     {
+        if (Instance.character1 == null || Instance.character2 == null) return;
         if (ActiveIInputHandler == Character1)
         {
             Instance.activeIInputHandler = Character2;
@@ -63,6 +68,8 @@ public class Gamemanager : Singleton<Gamemanager>
     {
 
         Char.GetComponent<CharacterController>().enabled = chControl;
+        Char.GetComponent<CapsuleCollider>().enabled = chControl;
+
 
     }
 }

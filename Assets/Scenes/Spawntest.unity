@@ -612,6 +612,8 @@ MonoBehaviour:
   - {fileID: 702440636}
   enemyPrefab: {fileID: 1504753269281523520, guid: d7bf3bdfaca59e14fbd77b4f644996b5, type: 3}
   enemyList: []
+  minTime: 1
+  maxTime: 5
 --- !u!4 &1625463835
 Transform:
   m_ObjectHideFlags: 0

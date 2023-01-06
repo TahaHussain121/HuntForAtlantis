@@ -9,7 +9,9 @@ TagManager:
   - Minotaur
   - Wall
   - PickableBlock
-  - BreakableBlock
+  - target
+  - Arrow
+  - Cerberus
   layers:
   - Default
   - TransparentFX

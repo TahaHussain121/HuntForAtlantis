@@ -9,12 +9,12 @@ public class HealthPickup : MonoBehaviour
     {
         if (other.tag == "Satyr" )
         {
-            other.GetComponent<SatyrFighter>().HealHealthByPercentage(healthPercentageToHealBy);
+            other.GetComponent<HealthController>().HealHealthByPercentage(healthPercentageToHealBy);
             Destroy(gameObject);
         }
         else if (other.tag == "Minotaur")
         {
-            other.GetComponent<SatyrFighter>().HealHealthByPercentage(healthPercentageToHealBy);
+            other.GetComponent<HealthController>().HealHealthByPercentage(healthPercentageToHealBy);
             Destroy(gameObject);
         }
     }
