@@ -72,4 +72,6 @@ public class Gamemanager : Singleton<Gamemanager>
 
 
     }
+
+    //if levels are tuts levels off character switching
 }

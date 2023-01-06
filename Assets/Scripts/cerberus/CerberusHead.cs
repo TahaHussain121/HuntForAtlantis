@@ -78,16 +78,18 @@ public class CerberusHead: MonoBehaviour
     public void TakePosForLunge()
   {
         headRb.position = new Vector3(headRb.position.x+3, headRb.position.y, headRb.position.z);
-      // transform.position = new Vector3(transform.position.x+3, transform.position.y, transform.position.z);
+     
   }
     public void PullBack()
   {
         headRb.position = new Vector3(headRb.position.x+5, headRb.position.y, headRb.position.z);
-      // transform.position = new Vector3(transform.position.x+3, transform.position.y, transform.position.z);
+      
   }
-  public void LungeAttack()
+    [ContextMenu("LungeAttack")]
+    public void LungeAttack()
   {
-       headRb.AddForce(-transform.right * 40, ForceMode.Impulse);
+       
+       headRb.AddForce(-LungeForce,0f,0f, ForceMode.VelocityChange);
    }
    public void ResetPos()
   {

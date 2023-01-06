@@ -138,7 +138,6 @@ GameObject:
   m_Component:
   - component: {fileID: 49607060}
   - component: {fileID: 49607066}
-  - component: {fileID: 49607063}
   - component: {fileID: 49607065}
   - component: {fileID: 49607062}
   - component: {fileID: 49607061}
@@ -212,24 +211,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &49607063
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 49607059}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34c62e590413bd64cbe18528c98cf298, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  direction: {x: 0, y: 1, z: 0}
-  speed: 10
-  objectsToMove:
-  - {fileID: 362328328}
-  - {fileID: 1254418747}
-  triggerOnce: 1
 --- !u!65 &49607065
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -258,7 +239,19 @@ MonoBehaviour:
   onTriggered:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 49607063}
+      - m_Target: {fileID: 362328333}
+        m_TargetAssemblyTypeName: MoveBlocks, Assembly-CSharp
+        m_MethodName: Move
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1254418752}
         m_TargetAssemblyTypeName: MoveBlocks, Assembly-CSharp
         m_MethodName: Move
         m_Mode: 1
@@ -861,6 +854,7 @@ GameObject:
   - component: {fileID: 362328332}
   - component: {fileID: 362328331}
   - component: {fileID: 362328330}
+  - component: {fileID: 362328333}
   m_Layer: 0
   m_Name: Ground (9)
   m_TagString: Untagged
@@ -944,6 +938,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 362328328}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &362328333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 362328328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34c62e590413bd64cbe18528c98cf298, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: {x: 0, y: 1, z: 0}
+  speed: 10
+  triggerOnce: 1
 --- !u!1 &454383827
 GameObject:
   m_ObjectHideFlags: 0
@@ -2087,6 +2096,7 @@ GameObject:
   - component: {fileID: 1254418751}
   - component: {fileID: 1254418750}
   - component: {fileID: 1254418749}
+  - component: {fileID: 1254418752}
   m_Layer: 0
   m_Name: Ground (10)
   m_TagString: Untagged
@@ -2170,6 +2180,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1254418747}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1254418752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1254418747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34c62e590413bd64cbe18528c98cf298, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: {x: 0, y: 1, z: 0}
+  speed: 10
+  triggerOnce: 1
 --- !u!1 &1414975243
 GameObject:
   m_ObjectHideFlags: 0

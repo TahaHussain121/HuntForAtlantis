@@ -33,7 +33,7 @@ public class AdvanceGroundChecker : MonoBehaviour
 
     public void AdvGroundSimpleRaycast()
     {
-
+        Debug.Log(charCtrl.isGrounded);
         if (charCtrl.isGrounded)
         {
 
@@ -55,7 +55,7 @@ public class AdvanceGroundChecker : MonoBehaviour
             if (Physics.Raycast(frontRay, out hit, dis) || Physics.Raycast(backRay, out hit, dis))
             {
 
-           // Debug.Log(hit.collider.name);
+            Debug.Log(hit.collider.name);
 
                 slip(hit.normal);
 

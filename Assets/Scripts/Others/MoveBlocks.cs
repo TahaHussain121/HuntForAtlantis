@@ -7,7 +7,6 @@ public class MoveBlocks : MonoBehaviour
 {
     [SerializeField] Vector3 direction;
     [SerializeField] float speed;
-    [SerializeField] GameObject[] objectsToMove;
     [SerializeField] bool triggerOnce = true;
     bool triggered;
     bool isMoving = false;
@@ -35,10 +34,7 @@ public class MoveBlocks : MonoBehaviour
     {
         if (isMoving)
         {
-            foreach (GameObject movable in objectsToMove)
-            {
-                movable.transform.position += speed * direction * Time.deltaTime;
-            }
+                transform.position += speed * direction * Time.deltaTime;
         }
     }
 }

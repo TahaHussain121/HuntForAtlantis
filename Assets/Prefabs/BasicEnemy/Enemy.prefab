@@ -148,8 +148,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackType: 0
   characterType: 3
-  maxHealth: 150
-  currentHealth: 150
   isRageBarFull: 0
 --- !u!114 &6755884670941134815
 MonoBehaviour:

@@ -15,6 +15,7 @@ public class ArrowButton : MonoBehaviour
             Destroy(other.gameObject);
             print("arrow detected");
             onTriggered?.Invoke();
+            Destroy(gameObject);
         }
 
     }
