@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Cinemachine;
+using UnityEngine.SceneManagement;
 public class Gamemanager : Singleton<Gamemanager>
 {
     [SerializeField]
@@ -17,7 +18,7 @@ public class Gamemanager : Singleton<Gamemanager>
     private Transform character2;
     internal static void GameOver()
     {
-        //throw new NotImplementedException();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public static IInputHandler Character1 => Instance.character1.GetComponent<IInputHandler>();

@@ -22,7 +22,8 @@ public class HealthController : Health
         }
         if (currentHealth == 0)
         {
-            Destroy(this.gameObject);
+            Gamemanager.GameOver();
+          //  Destroy(this.gameObject);
         }
     }
 
