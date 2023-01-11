@@ -989,7 +989,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 365150546817679861, guid: 3fe977c17b12e994185924b740c8bab5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 28.9
+      value: -88.35
       objectReference: {fileID: 0}
     - target: {fileID: 365150546817679861, guid: 3fe977c17b12e994185924b740c8bab5, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1027,6 +1027,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 516410534603316440, guid: 3fe977c17b12e994185924b740c8bab5, type: 3}
+      propertyPath: healthSlider
+      value: 
+      objectReference: {fileID: 843148285450267729}
     - target: {fileID: 1034304885642484559, guid: 3fe977c17b12e994185924b740c8bab5, type: 3}
       propertyPath: m_Name
       value: Minotaur
@@ -1035,13 +1039,21 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1650561200597704577, guid: 3fe977c17b12e994185924b740c8bab5, type: 3}
+      propertyPath: rageSlider
+      value: 
+      objectReference: {fileID: 1149441568}
     - target: {fileID: 4826762257381103931, guid: 3fe977c17b12e994185924b740c8bab5, type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7484980506545515558, guid: 3fe977c17b12e994185924b740c8bab5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7484980508162746137, guid: 3fe977c17b12e994185924b740c8bab5, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8805045997265266637, guid: 3fe977c17b12e994185924b740c8bab5, type: 3}
@@ -1238,7 +1250,7 @@ MonoBehaviour:
   enemyPrefab: {fileID: 6755884670941134812, guid: fe1c7297a9852e941be23ab15c586c3a, type: 3}
   enemyList: []
   periodicSpawn: 0
-  scale: {x: 0, y: 0, z: 0}
+  scale: {x: 1, y: 1, z: 1}
   minTime: 5
   maxTime: 15
 --- !u!4 &887876717
@@ -3149,7 +3161,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 100
   m_WholeNumbers: 1
-  m_Value: 0
+  m_Value: 100
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

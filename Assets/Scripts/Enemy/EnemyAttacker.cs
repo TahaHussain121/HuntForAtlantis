@@ -104,7 +104,7 @@ public class EnemyAttacker : MonoBehaviour, IFighter, IAttackable
     {
         if (other.tag == "Arrow")
         {
-
+            Destroy(other.gameObject);
             OnAttacked(CharacterType.Satyr, AttackType.Ranged);
 
 
